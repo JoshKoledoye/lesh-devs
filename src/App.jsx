@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import logoImg from './favicon.png'
 import './styles.css'
 
 const languages = [
@@ -60,6 +59,29 @@ function getRank(points) {
   return [...ranks].reverse().find((rank) => points >= rank.min) || ranks[0]
 }
 
+function BrandShield({ className = '' }) {
+  return (
+    <span className={`shield-emblem ${className}`} aria-hidden="true">
+      <svg viewBox="0 0 48 54" width="28" height="32">
+        <path
+          d="M24 2 L45 9 L39 38 L24 52 L9 38 L3 9 Z"
+          fill="#070a2b"
+          stroke="#9aa328"
+          strokeWidth="2.2"
+        />
+        <path
+          d="M11 33 L18 21 L23 29 L30 14 L38 33"
+          fill="none"
+          stroke="#b6a428"
+          strokeWidth="2.4"
+          strokeLinejoin="round"
+        />
+        <path d="M8 34 Q24 31 40 34 L39 39 Q24 36 9 39 Z" fill="#8b7d1a" />
+      </svg>
+    </span>
+  )
+}
+
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('leshdevs-theme') || 'light')
   const [activeLanguage, setActiveLanguage] = useState(() => localStorage.getItem('leshdevs-lang') || 'Python')
@@ -70,7 +92,7 @@ export default function App() {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [answered, setAnswered] = useState(false)
   const [notice, setNotice] = useState('')
-  const [hudOpen, setHudOpen] = useState(false)
+  const [hudExpanded, setHudExpanded] = useState(true)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -90,8 +112,8 @@ export default function App() {
   const currentLanguage = languages.find((language) => language.name === activeLanguage) || languages[0]
   const accuracy = attemptsCount > 0 ? Math.round((solvedCount / attemptsCount) * 100) : 100
 
-  function toggleTheme() {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  function toggleDarkMode() {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
 
   function submitAnswer() {
@@ -141,21 +163,21 @@ export default function App() {
     }
   }
 
-  function resetTelemetry() {
+  function resetStats() {
     setPoints(420)
     setSolvedCount(0)
     setAttemptsCount(0)
     localStorage.setItem('leshdevs-points', '420')
     localStorage.setItem('leshdevs-solved', '0')
     localStorage.setItem('leshdevs-attempts', '0')
-    setNotice('Telemetry reset to baseline (420 pts).')
+    setNotice('Operative XP reset to 420 pts.')
   }
 
   return (
     <div className="app-shell" data-theme={theme}>
       <aside className="sidebar">
         <a className="brand" href="#home" aria-label="LeshDevs home">
-          <img className="brand-logo" src={logoImg} alt="LeshDevs shield emblem" />
+          <BrandShield />
           <span>
             lesh<span className="brand-light">devs</span>
           </span>
@@ -163,7 +185,7 @@ export default function App() {
 
         <div className="side-label">
           <span>LEARNING SPACE</span>
-          <span className="mono-tag">{theme === 'dark' ? 'BRUTAL.SYS' : 'UI.LIGHT'}</span>
+          <span className="hud-chip">{theme === 'dark' ? 'DARK // BRUTAL' : 'LIGHT // UI'}</span>
         </div>
 
         <nav className="side-nav" aria-label="Main navigation">
@@ -186,47 +208,63 @@ export default function App() {
             <span className="streak-icon">✦</span>
             <div>
               <strong>Keep showing up</strong>
-              <small>Active loadout: {currentLanguage.name}</small>
+              <small>Loadout: {currentLanguage.name} · 3d streak</small>
             </div>
           </div>
 
-          {/* Bat-Tech Operative HUD Module */}
-          <div className="bat-hud">
-            <button
-              type="button"
-              className="bat-hud-trigger"
-              onClick={() => setHudOpen((open) => !open)}
-              aria-expanded={hudOpen}
-            >
-              <img className="hud-emblem" src={logoImg} alt="" />
-              <div className="hud-meta">
-                <span className="hud-callsign">BAT-HUD // OP-01</span>
-                <strong>RANK {rank.name} · {points} PTS</strong>
+          {/* Bat-Tech Operative HUD */}
+          <section className="bat-hud" aria-label="Bat-Tech Operative HUD">
+            <div className="bat-hud-header">
+              <div className="bat-hud-identity">
+                <BrandShield className="hud-shield" />
+                <div>
+                  <span className="hud-code">BAT-HUD // MK-IV</span>
+                  <strong>OP-01 · RANK {rank.name}</strong>
+                </div>
               </div>
-              <span className="hud-toggle-icon">{hudOpen ? '−' : '+'}</span>
-            </button>
+              <button
+                type="button"
+                className="hud-collapse-btn"
+                onClick={() => setHudExpanded((v) => !v)}
+                aria-expanded={hudExpanded}
+                aria-label="Toggle Bat-HUD details"
+              >
+                {hudExpanded ? '−' : '+'}
+              </button>
+            </div>
 
-            {hudOpen && (
-              <div className="bat-hud-drawer">
-                <div className="hud-row">
-                  <span>ACCURACY</span>
-                  <strong>{accuracy}% ({solvedCount}/{attemptsCount})</strong>
+            {hudExpanded && (
+              <div className="bat-hud-body">
+                <div className="hud-metrics">
+                  <div>
+                    <span>SCORE</span>
+                    <strong>{points} PTS</strong>
+                  </div>
+                  <div>
+                    <span>ACCURACY</span>
+                    <strong>{accuracy}%</strong>
+                  </div>
                 </div>
-                <div className="hud-row">
-                  <span>SYNC MODE</span>
-                  <strong>LOCAL // MERN-READY</strong>
-                </div>
-                <div className="hud-actions">
-                  <button type="button" className="hud-btn" onClick={toggleTheme}>
-                    {theme === 'light' ? 'Activate Cyber-Brutal' : 'Switch to Light Mode'}
-                  </button>
-                  <button type="button" className="hud-btn ghost" onClick={resetTelemetry}>
+
+                <button
+                  type="button"
+                  className="dark-toggle-btn sidebar-dark-btn"
+                  onClick={toggleDarkMode}
+                  aria-pressed={theme === 'dark'}
+                >
+                  <span>{theme === 'dark' ? '☀' : '☾'}</span>
+                  <span>{theme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode'}</span>
+                </button>
+
+                <div className="hud-subbar">
+                  <span>MERN_SYNC: STANDBY</span>
+                  <button type="button" className="hud-reset-link" onClick={resetStats}>
                     Reset XP
                   </button>
                 </div>
               </div>
             )}
-          </div>
+          </section>
         </div>
       </aside>
 
@@ -235,20 +273,20 @@ export default function App() {
           <div className="breadcrumb">
             Workspace <span>/</span> Overview <span>/</span> {currentLanguage.name}
           </div>
+
           <div className="topbar-right">
+            <span className="status-text">
+              <span className="online-dot" /> Local save active
+            </span>
             <button
               type="button"
-              className="theme-switch"
-              onClick={toggleTheme}
-              aria-label="Toggle dark and light mode"
+              className="dark-toggle-btn topbar-dark-btn"
+              onClick={toggleDarkMode}
+              aria-pressed={theme === 'dark'}
             >
-              <span className="online-dot" />
-              <span>{theme === 'light' ? 'CYBER BRUTALISM MODE' : 'LIGHT MODE'}</span>
+              <span>{theme === 'dark' ? '☀' : '☾'}</span>
+              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
             </button>
-            <div className="top-hud-pill" title="Operative Rank & Loadout">
-              <img src={logoImg} alt="Operative emblem" />
-              <span>OP-01 · {rank.name}</span>
-            </div>
           </div>
         </header>
 
@@ -494,17 +532,17 @@ export default function App() {
           </div>
         </section>
 
-        {/* DC Comics Source Wall Styled Section */}
+        {/* Source Wall Section (DC Comics Source Wall Reference) */}
         <section className="source-section source-wall-cosmic" id="source-wall">
           <div className="source-wall-beams" aria-hidden="true" />
           <div className="section-heading source-heading">
             <div>
-              <p className="eyebrow source-eyebrow">EDGE OF THE KNOWN CURRICULUM</p>
+              <p className="eyebrow source-eyebrow">BEYOND THE CORE SYLLABUS</p>
               <h2>
                 The Source Wall<span className="source-spark">.</span>
               </h2>
               <p className="section-subtitle">
-                Ancient archives &amp; cosmic relays beyond the core syllabus.
+                Ancient archives &amp; external relays waiting past the edge of the board.
               </p>
             </div>
             <span className="source-note">SOURCE RELAYS · OPENS IN NEW TAB</span>
@@ -537,7 +575,7 @@ export default function App() {
 
         <footer className="footer">
           <a className="brand footer-brand" href="#home">
-            <img className="brand-logo" src={logoImg} alt="LeshDevs shield emblem" />
+            <BrandShield />
             <span>
               lesh<span className="brand-light">devs</span>
             </span>
