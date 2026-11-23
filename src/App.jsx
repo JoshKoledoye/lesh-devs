@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import './styles.css'
 
 const languages = [
-  { name: 'Python', symbol: 'Py', color: 'python', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01' },
-  { name: 'Java', symbol: 'Jv', color: 'java', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02' },
-  { name: 'HTML', symbol: '5', color: 'html', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03' },
-  { name: 'CSS', symbol: '3', color: 'css', lessons: 9, progress: 51, topic: 'Flexbox layout', code: '04' },
-  { name: 'JavaScript', symbol: 'JS', color: 'javascript', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05' },
-  { name: 'C', symbol: 'C', color: 'c', lessons: 11, progress: 12, topic: 'Variables & types', code: '06' },
+  { name: 'Python', symbol: 'Py', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
+  { name: 'Java', symbol: 'Jv', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
+  { name: 'HTML', symbol: '5', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
+  { name: 'CSS', symbol: '3', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
+  { name: 'JavaScript', symbol: 'JS', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
+  { name: 'C', symbol: 'C', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
 ]
 
 const challenges = [
@@ -23,7 +23,7 @@ const resources = [
   {
     type: 'COURSE',
     name: 'MIT OpenCourseWare',
-    description: 'University-level computer science courses, freely shared.',
+    description: 'University-level computer science lectures and problem sets, freely shared.',
     meta: 'Free · Self-paced',
     url: 'https://ocw.mit.edu/search/?q=introduction%20programming',
     mark: 'MIT',
@@ -31,15 +31,15 @@ const resources = [
   {
     type: 'VIDEO',
     name: 'Bro Code',
-    description: 'Clear, hands-on programming tutorials for curious beginners.',
-    meta: 'YouTube · Video lessons',
+    description: 'Clear, zero-fluff programming tutorials built for hands-on learners.',
+    meta: 'YouTube · Video tracks',
     url: 'https://www.youtube.com/@BroCodez',
     mark: '▶',
   },
   {
     type: 'PRACTICE',
     name: 'freeCodeCamp',
-    description: 'Build projects and practice web development at your own pace.',
+    description: 'Interactive coding sandboxes and certification projects at your own pace.',
     meta: 'Free · Interactive',
     url: 'https://www.freecodecamp.org/learn/',
     mark: 'fCC',
@@ -47,36 +47,36 @@ const resources = [
 ]
 
 const ranks = [
-  { name: 'E', min: 0, color: 'rank-e' },
-  { name: 'D', min: 100, color: 'rank-d' },
-  { name: 'C', min: 250, color: 'rank-c' },
-  { name: 'B', min: 500, color: 'rank-b' },
-  { name: 'A', min: 900, color: 'rank-a' },
-  { name: 'S', min: 1500, color: 'rank-s' },
+  { name: 'E', min: 0 },
+  { name: 'D', min: 100 },
+  { name: 'C', min: 250 },
+  { name: 'B', min: 500 },
+  { name: 'A', min: 900 },
+  { name: 'S', min: 1500 },
 ]
 
 function getRank(points) {
   return [...ranks].reverse().find((rank) => points >= rank.min) || ranks[0]
 }
 
-function BrandShield({ className = '' }) {
+function BrandShield() {
   return (
-    <span className={`shield-emblem ${className}`} aria-hidden="true">
+    <span className="shield-emblem" aria-hidden="true">
       <svg viewBox="0 0 48 54" width="28" height="32">
         <path
           d="M24 2 L45 9 L39 38 L24 52 L9 38 L3 9 Z"
-          fill="#070a2b"
-          stroke="#9aa328"
+          fill="#071361"
+          stroke="#ffffff"
           strokeWidth="2.2"
         />
         <path
           d="M11 33 L18 21 L23 29 L30 14 L38 33"
           fill="none"
-          stroke="#b6a428"
+          stroke="#ffffff"
           strokeWidth="2.4"
           strokeLinejoin="round"
         />
-        <path d="M8 34 Q24 31 40 34 L39 39 Q24 36 9 39 Z" fill="#8b7d1a" />
+        <path d="M8 34 Q24 31 40 34 L39 39 Q24 36 9 39 Z" fill="#ffffff" />
       </svg>
     </span>
   )
@@ -85,16 +85,11 @@ function BrandShield({ className = '' }) {
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('leshdevs-theme') || 'light')
   const [activeLanguage, setActiveLanguage] = useState(() => localStorage.getItem('leshdevs-lang') || 'Python')
-  const [activeNav, setActiveNav] = useState('#home')
   const [points, setPoints] = useState(() => Number(localStorage.getItem('leshdevs-points')) || 420)
-  const [solvedCount, setSolvedCount] = useState(() => Number(localStorage.getItem('leshdevs-solved')) || 0)
-  const [attemptsCount, setAttemptsCount] = useState(() => Number(localStorage.getItem('leshdevs-attempts')) || 0)
   const [challengeIndex, setChallengeIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [answered, setAnswered] = useState(false)
   const [notice, setNotice] = useState('')
-  const [hudExpanded, setHudExpanded] = useState(true)
-  const [mobileHudOpen, setMobileHudOpen] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -112,7 +107,6 @@ export default function App() {
     : 100
   const challenge = challenges[challengeIndex]
   const currentLanguage = languages.find((language) => language.name === activeLanguage) || languages[0]
-  const accuracy = attemptsCount > 0 ? Math.round((solvedCount / attemptsCount) * 100) : 100
 
   function toggleDarkMode() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
@@ -121,20 +115,13 @@ export default function App() {
   function submitAnswer() {
     if (!selectedAnswer || answered) return
     setAnswered(true)
-    const nextAttempts = attemptsCount + 1
-    setAttemptsCount(nextAttempts)
-    localStorage.setItem('leshdevs-attempts', String(nextAttempts))
-
     if (selectedAnswer === challenge.answer) {
       const updatedPoints = points + 25
-      const updatedSolved = solvedCount + 1
       setPoints(updatedPoints)
-      setSolvedCount(updatedSolved)
       localStorage.setItem('leshdevs-points', String(updatedPoints))
-      localStorage.setItem('leshdevs-solved', String(updatedSolved))
-      setNotice('Correct! +25 points added to your rank score.')
+      setNotice('Correct! +25 XP added to your profile.')
     } else {
-      setNotice(`Not quite — the answer is ${challenge.answer}. Keep going!`)
+      setNotice(`Not quite — the answer is ${challenge.answer}. Try the next one.`)
     }
   }
 
@@ -151,7 +138,6 @@ export default function App() {
     setSelectedAnswer('')
     setAnswered(false)
     setNotice('')
-    setActiveNav('#arena')
     document.querySelector('#arena')?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -166,569 +152,314 @@ export default function App() {
     }
   }
 
-  function resetStats() {
-    setPoints(420)
-    setSolvedCount(0)
-    setAttemptsCount(0)
-    localStorage.setItem('leshdevs-points', '420')
-    localStorage.setItem('leshdevs-solved', '0')
-    localStorage.setItem('leshdevs-attempts', '0')
-    setNotice('Operative XP reset to 420 pts.')
-  }
-
   return (
-    <div className="app-shell" data-theme={theme}>
-      {/* Desktop Sidebar */}
-      <aside className="sidebar">
-        <a className="brand" href="#home" onClick={() => setActiveNav('#home')} aria-label="LeshDevs home">
-          <BrandShield />
-          <span>
-            lesh<span className="brand-light">devs</span>
-          </span>
-        </a>
-
-        <div className="side-label">
-          <span>LEARNING SPACE</span>
-          <span className="hud-chip">{theme === 'dark' ? 'DARK // BRUTAL' : 'LIGHT // UI'}</span>
-        </div>
-
-        <nav className="side-nav" aria-label="Main navigation">
-          <a
-            className={`nav-link ${activeNav === '#home' ? 'active' : ''}`}
-            href="#home"
-            onClick={() => setActiveNav('#home')}
-          >
-            <span>⌂</span> Overview
+    <div className="site-shell" data-theme={theme}>
+      {/* Startup Sticky Top Navbar */}
+      <header className="navbar">
+        <div className="nav-inner">
+          <a className="brand" href="#top" aria-label="LeshDevs Home">
+            <BrandShield />
+            <span>
+              lesh<span className="brand-thin">devs</span>
+            </span>
           </a>
-          <a
-            className={`nav-link ${activeNav === '#languages' ? 'active' : ''}`}
-            href="#languages"
-            onClick={() => setActiveNav('#languages')}
-          >
-            <span>▦</span> My languages
-          </a>
-          <a
-            className={`nav-link ${activeNav === '#arena' ? 'active' : ''}`}
-            href="#arena"
-            onClick={() => setActiveNav('#arena')}
-          >
-            <span>⚡</span> Challenge arena
-          </a>
-          <a
-            className={`nav-link ${activeNav === '#source-wall' ? 'active' : ''}`}
-            href="#source-wall"
-            onClick={() => setActiveNav('#source-wall')}
-          >
-            <span>↗</span> Source wall
-          </a>
-        </nav>
 
-        <div className="sidebar-bottom">
-          <div className="streak-card">
-            <span className="streak-icon">✦</span>
-            <div>
-              <strong>Keep showing up</strong>
-              <small>Loadout: {currentLanguage.name} · 3d streak</small>
-            </div>
-          </div>
+          <nav className="nav-links" aria-label="Primary Navigation">
+            <a href="#languages">Curriculum</a>
+            <a href="#arena">Challenge Arena</a>
+            <a href="#source-wall">The Source Wall</a>
+          </nav>
 
-          {/* Bat-Tech Operative HUD */}
-          <section className="bat-hud" aria-label="Bat-Tech Operative HUD">
-            <div className="bat-hud-header">
-              <div className="bat-hud-identity">
-                <BrandShield className="hud-shield" />
-                <div>
-                  <span className="hud-code">BAT-HUD // MK-IV</span>
-                  <strong>OP-01 · RANK {rank.name}</strong>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="hud-collapse-btn"
-                onClick={() => setHudExpanded((v) => !v)}
-                aria-expanded={hudExpanded}
-                aria-label="Toggle Bat-HUD details"
-              >
-                {hudExpanded ? '−' : '+'}
-              </button>
-            </div>
-
-            {hudExpanded && (
-              <div className="bat-hud-body">
-                <div className="hud-metrics">
-                  <div>
-                    <span>SCORE</span>
-                    <strong>{points} PTS</strong>
-                  </div>
-                  <div>
-                    <span>ACCURACY</span>
-                    <strong>{accuracy}%</strong>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  className="dark-toggle-btn sidebar-dark-btn"
-                  onClick={toggleDarkMode}
-                  aria-pressed={theme === 'dark'}
-                >
-                  <span>{theme === 'dark' ? '☀' : '☾'}</span>
-                  <span>{theme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode'}</span>
-                </button>
-
-                <div className="hud-subbar">
-                  <span>MERN_SYNC: STANDBY</span>
-                  <button type="button" className="hud-reset-link" onClick={resetStats}>
-                    Reset XP
-                  </button>
-                </div>
-              </div>
-            )}
-          </section>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="main-content" id="home">
-        <div className="content-container">
-          <header className="topbar">
-            <div className="topbar-left">
-              <a className="brand mobile-brand" href="#home" aria-label="LeshDevs home">
-                <BrandShield />
-                <span>
-                  lesh<span className="brand-light">devs</span>
-                </span>
-              </a>
-              <div className="breadcrumb">
-                Workspace <span>/</span> Overview <span>/</span> {currentLanguage.name}
-              </div>
-            </div>
-
-            <div className="topbar-right">
-              <span className="status-text">
-                <span className="online-dot" /> Local save active
-              </span>
-              <button
-                type="button"
-                className="dark-toggle-btn topbar-dark-btn"
-                onClick={toggleDarkMode}
-                aria-pressed={theme === 'dark'}
-              >
-                <span>{theme === 'dark' ? '☀' : '☾'}</span>
-                <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-              </button>
-            </div>
-          </header>
-
-          <section className="welcome-row">
-            <div className="welcome-text">
-              <p className="eyebrow">
-                <span className="eyebrow-line" /> YOUR NEXT CHAPTER STARTS HERE
-              </p>
-              <h1>
-                Build your coding
-                <br />
-                foundation<span className="accent-dot">.</span>
-              </h1>
-              <p className="welcome-copy">
-                Learn the fundamentals, take on challenges, and earn your place on the board.
-              </p>
-              <a className="button button-dark" href="#languages" onClick={() => setActiveNav('#languages')}>
-                Pick up where you left off <span>↗</span>
-              </a>
-            </div>
-
-            <div className="welcome-art" aria-label="Code your own way illustration">
-              <div className="art-window">
-                <div className="window-top">
-                  <div className="window-dots">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                  <span>your_next_idea.py</span>
-                </div>
-                <div className="code-lines">
-                  <span>
-                    <b>01</b>
-                    <em>print</em>(<strong>&quot;hello, future&quot;</strong>)
-                  </span>
-                  <span>
-                    <b>02</b>
-                  </span>
-                  <span>
-                    <b>03</b>
-                    <em>while</em> <strong>learning:</strong>
-                  </span>
-                  <span>
-                    <b>04</b>&nbsp;&nbsp; build(<strong>something_new</strong>)
-                  </span>
-                  <span>
-                    <b>05</b>&nbsp;&nbsp; repeat(∞)
-                  </span>
-                </div>
-              </div>
-              <div className="art-caption">IDEAS → REALITY</div>
-            </div>
-          </section>
-
-          <section className="stats-row" aria-label="Your learning stats">
-            <article className="stat-card points-stat">
-              <div className="stat-icon yellow">✦</div>
-              <div className="stat-body">
-                <span className="stat-label">[01] TOTAL POINTS</span>
-                <strong>{points.toLocaleString()}</strong>
-                <small>Earn points as you learn</small>
-              </div>
-              <span className="stat-arrow">↗</span>
-            </article>
-
-            <article className="stat-card">
-              <div className={`rank-badge ${rank.color}`}>{rank.name}</div>
-              <div className="stat-body">
-                <span className="stat-label">[02] CURRENT RANK</span>
-                <strong>Rank {rank.name}</strong>
-                <small>
-                  {nextRank ? `${nextRank.min - points} points to Rank ${nextRank.name}` : 'Top rank unlocked!'}
-                </small>
-              </div>
-              <span className="rank-system">S · A · B · C · D · E</span>
-            </article>
-
-            <article className="stat-card">
-              <div className="stat-icon mint">◷</div>
-              <div className="stat-body">
-                <span className="stat-label">[03] LEARNING STREAK</span>
-                <strong>3 days</strong>
-                <small>Consistency looks good on you</small>
-              </div>
-              <span className="stat-arrow">↗</span>
-            </article>
-          </section>
-
-          <section className="rank-progress">
-            <div className="progress-heading">
-              <div>
-                <strong>Your rank journey</strong>
-                <span>Points turn practice into progress.</span>
-              </div>
-              <span className="progress-numbers">
-                {points} <i>/</i> {nextRank ? nextRank.min : points} pts
-              </span>
-            </div>
-            <div className="progress-track">
-              <span style={{ width: `${progressToNext}%` }} />
-            </div>
-            <div className="rank-steps">
-              {ranks.map((item) => (
-                <span className={points >= item.min ? 'rank-step reached' : 'rank-step'} key={item.name}>
-                  <i className={item.color}>{item.name}</i>
-                  <small>{item.min}</small>
-                </span>
-              ))}
-            </div>
-          </section>
-
-          <section className="section-block" id="languages">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">YOUR TOOLKIT</p>
-                <h2>
-                  Choose a language<span className="accent-dot">.</span>
-                </h2>
-                <p className="section-subtitle">Strong foundations start with one small step.</p>
-              </div>
-              <button
-                type="button"
-                className="text-link"
-                onClick={() => startChallenge(currentLanguage.name)}
-              >
-                Practice {currentLanguage.name} <span>↗</span>
-              </button>
-            </div>
-
-            <div className="language-grid">
-              {languages.map((language) => (
-                <button
-                  type="button"
-                  key={language.name}
-                  className={`language-card ${activeLanguage === language.name ? 'language-active' : ''}`}
-                  onClick={() => handleSelectLanguage(language.name)}
-                  aria-pressed={activeLanguage === language.name}
-                >
-                  <div className="language-card-top">
-                    <span className={`language-icon ${language.color}`}>{language.symbol}</span>
-                    <span className="card-menu">/{language.code}</span>
-                  </div>
-                  <strong>{language.name}</strong>
-                  <span className="language-topic">Next up · {language.topic}</span>
-                  <div className="language-progress">
-                    <span style={{ width: `${language.progress}%` }} />
-                  </div>
-                  <div className="language-meta">
-                    <span>{language.progress}% complete</span>
-                    <span>{language.lessons} lessons</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p className="coming-soon">
-              <span>＋</span> More languages are on the way. Start with the fundamentals, then grow your toolkit.
-            </p>
-          </section>
-
-          <section className="arena-section" id="arena">
-            <div className="arena-intro">
-              <p className="eyebrow">LEARN IT. PROVE IT.</p>
-              <h2>
-                Challenge arena<span className="accent-dot">.</span>
-              </h2>
-              <p>
-                Quick-fire questions earn you points. Every correct answer gets you closer to the next rank.
-              </p>
-              <div className="arena-tags">
-                <span>⚡ +25 points</span>
-                <span>◷ Just a minute</span>
-              </div>
-            </div>
-
-            <div className="challenge-card">
-              <div className="challenge-top">
-                <span className="live-pill">
-                  <i /> QUICK CHALLENGE
-                </span>
-                <span className="challenge-language">{challenge.language} · Foundations</span>
-              </div>
-              <h3>{challenge.prompt}</h3>
-              <div className="answer-list">
-                {challenge.options.map((option, index) => (
-                  <button
-                    type="button"
-                    key={option}
-                    className={`answer-option ${selectedAnswer === option ? 'answer-selected' : ''} ${
-                      answered && option === challenge.answer ? 'answer-correct' : ''
-                    } ${
-                      answered && selectedAnswer === option && option !== challenge.answer ? 'answer-wrong' : ''
-                    }`}
-                    onClick={() => !answered && setSelectedAnswer(option)}
-                    disabled={answered}
-                  >
-                    <span className="answer-letter">{String.fromCharCode(65 + index)}</span>
-                    <span>{option}</span>
-                    <span className="answer-check">{answered && option === challenge.answer ? '✓' : ''}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="challenge-footer">
-                <span
-                  className={notice.startsWith('Correct') ? 'notice success' : 'notice'}
-                  aria-live="polite"
-                >
-                  {notice || 'Choose your answer to play'}
-                </span>
-                {answered ? (
-                  <button type="button" className="button button-dark" onClick={nextChallenge}>
-                    Next question <span>→</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="button button-dark"
-                    onClick={submitAnswer}
-                    disabled={!selectedAnswer}
-                  >
-                    Lock it in <span>→</span>
-                  </button>
-                )}
-              </div>
-              <div className="challenge-switch">
-                <span>Want a different language?</span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    startChallenge(currentLanguage?.name === challenge.language ? 'HTML' : currentLanguage?.name)
-                  }
-                >
-                  {currentLanguage?.name === challenge.language
-                    ? 'Try HTML'
-                    : `Try ${currentLanguage?.name}`}{' '}
-                  ↗
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Source Wall Section */}
-          <section className="source-section source-wall-cosmic" id="source-wall">
-            <div className="source-wall-beams" aria-hidden="true" />
-            <div className="section-heading source-heading">
-              <div>
-                <p className="eyebrow source-eyebrow">BEYOND THE CORE SYLLABUS</p>
-                <h2>
-                  The Source Wall<span className="source-spark">.</span>
-                </h2>
-                <p className="section-subtitle">
-                  Ancient archives &amp; external relays waiting past the edge of the board.
-                </p>
-              </div>
-              <span className="source-note">SOURCE RELAYS · OPENS IN NEW TAB</span>
-            </div>
-
-            <div className="resource-grid">
-              {resources.map((resource) => (
-                <a
-                  className="resource-card monolith-card"
-                  href={resource.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  key={resource.name}
-                >
-                  <div className="resource-top">
-                    <span className="resource-mark">{resource.mark}</span>
-                    <span className="resource-type">{resource.type}</span>
-                    <span className="resource-arrow">↗</span>
-                  </div>
-                  <h3>{resource.name}</h3>
-                  <p>{resource.description}</p>
-                  <div className="resource-meta">
-                    {resource.meta}
-                    <span>↗</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          <footer className="footer">
-            <a className="brand footer-brand" href="#home" onClick={() => setActiveNav('#home')}>
-              <BrandShield />
-              <span>
-                lesh<span className="brand-light">devs</span>
-              </span>
-            </a>
-            <span>Learn the basics. Build what’s next.</span>
-            <a href="#home" onClick={() => setActiveNav('#home')}>Back to top ↑</a>
-          </footer>
-        </div>
-      </main>
-
-      {/* Mobile Slide-Up Bat-HUD Drawer */}
-      {mobileHudOpen && (
-        <div className="mobile-hud-sheet" role="dialog" aria-label="Operative HUD Drawer">
-          <div className="mobile-hud-sheet-header">
-            <div className="bat-hud-identity">
-              <BrandShield />
-              <div>
-                <span className="hud-code">BAT-HUD // MK-IV</span>
-                <strong>OP-01 · RANK {rank.name}</strong>
-              </div>
-            </div>
+          <div className="nav-actions">
+            <span className="rank-pill" title="Your current rank and points">
+              RANK {rank.name} · {points} PTS
+            </span>
             <button
               type="button"
-              className="hud-collapse-btn"
-              onClick={() => setMobileHudOpen(false)}
-              aria-label="Close HUD"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="hud-metrics">
-            <div>
-              <span>SCORE</span>
-              <strong>{points} PTS</strong>
-            </div>
-            <div>
-              <span>ACCURACY</span>
-              <strong>{accuracy}%</strong>
-            </div>
-            <div>
-              <span>LOADOUT</span>
-              <strong>{currentLanguage.name}</strong>
-            </div>
-            <div>
-              <span>STREAK</span>
-              <strong>3 DAYS</strong>
-            </div>
-          </div>
-
-          <div className="mobile-hud-actions">
-            <button
-              type="button"
-              className="dark-toggle-btn"
+              className="theme-btn"
               onClick={toggleDarkMode}
               aria-pressed={theme === 'dark'}
             >
               <span>{theme === 'dark' ? '☀' : '☾'}</span>
-              <span>{theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}</span>
+              <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
             </button>
-            <button type="button" className="hud-reset-btn" onClick={resetStats}>
-              Reset XP
-            </button>
+            <a className="nav-cta" href="#arena">
+              Start Coding
+            </a>
           </div>
         </div>
-      )}
+      </header>
 
-      {/* Modern Mobile Bottom Dock */}
-      <nav className="mobile-bottom-dock" aria-label="Mobile navigation">
-        <a
-          className={`dock-item ${activeNav === '#home' && !mobileHudOpen ? 'active' : ''}`}
-          href="#home"
-          onClick={() => {
-            setActiveNav('#home')
-            setMobileHudOpen(false)
-          }}
-        >
-          <span className="dock-icon">⌂</span>
-          <span className="dock-label">Overview</span>
-        </a>
+      <main id="top">
+        {/* Startup Hero Section */}
+        <section className="hero-section">
+          <div className="container hero-grid">
+            <div className="hero-copy">
+              <div className="hero-badge">
+                <span className="pulse-dot" />
+                <span>FOUNDATIONS FIRST · 6 CORE LANGUAGES</span>
+              </div>
+              <h1>
+                Master the core of software engineering<span className="dot">.</span>
+              </h1>
+              <p className="hero-subtitle">
+                LeshDevs takes students from their first line of syntax to confident problem-solving across
+                Python, Java, HTML, CSS, JavaScript, and C.
+              </p>
+              <div className="hero-cta-row">
+                <a className="btn btn-primary" href="#languages">
+                  Explore Curriculum <span>→</span>
+                </a>
+                <a className="btn btn-outline" href="#arena">
+                  Try Live Challenge
+                </a>
+              </div>
 
-        <a
-          className={`dock-item ${activeNav === '#languages' && !mobileHudOpen ? 'active' : ''}`}
-          href="#languages"
-          onClick={() => {
-            setActiveNav('#languages')
-            setMobileHudOpen(false)
-          }}
-        >
-          <span className="dock-icon">▦</span>
-          <span className="dock-label">Languages</span>
-        </a>
+              <div className="hero-metrics">
+                <div>
+                  <strong>6</strong>
+                  <span>Core Languages</span>
+                </div>
+                <div>
+                  <strong>64</strong>
+                  <span>Structured Lessons</span>
+                </div>
+                <div>
+                  <strong>Rank {rank.name}</strong>
+                  <span>{points} XP Earned</span>
+                </div>
+              </div>
+            </div>
 
-        <a
-          className={`dock-item ${activeNav === '#arena' && !mobileHudOpen ? 'active' : ''}`}
-          href="#arena"
-          onClick={() => {
-            setActiveNav('#arena')
-            setMobileHudOpen(false)
-          }}
-        >
-          <span className="dock-icon">⚡</span>
-          <span className="dock-label">Arena</span>
-        </a>
+            {/* Cool Code Editor Visual */}
+            <div className="hero-code-card" aria-label="Interactive code preview">
+              <div className="code-header">
+                <div className="code-dots">
+                  <i />
+                  <i />
+                  <i />
+                </div>
+                <span className="code-filename">foundation_core.py</span>
+                <span className="code-lang-tag">{currentLanguage.name}</span>
+              </div>
+              <pre className="code-body">
+                <code>
+                  <span className="ln">01</span> <span className="kw">def</span>{' '}
+                  <span className="fn">build_foundation</span>(student):
+                  {'\n'}
+                  <span className="ln">02</span>     stack = [<span className="str">&quot;Python&quot;</span>,{' '}
+                  <span className="str">&quot;Java&quot;</span>, <span className="str">&quot;JS&quot;</span>,{' '}
+                  <span className="str">&quot;C&quot;</span>]
+                  {'\n'}
+                  <span className="ln">03</span>     <span className="kw">for</span> lang{' '}
+                  <span className="kw">in</span> stack:
+                  {'\n'}
+                  <span className="ln">04</span>         student.master(lang)
+                  {'\n'}
+                  <span className="ln">05</span>     <span className="kw">return</span>{' '}
+                  <span className="str">&quot;Ready to ship.&quot;</span>
+                </code>
+              </pre>
+              <div className="code-footer">
+                <span>STATUS: COMPILING FUNDAMENTALS</span>
+                <span>NEXT RANK: {nextRank ? `${nextRank.min - points} PTS` : 'MAX'}</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <a
-          className={`dock-item ${activeNav === '#source-wall' && !mobileHudOpen ? 'active' : ''}`}
-          href="#source-wall"
-          onClick={() => {
-            setActiveNav('#source-wall')
-            setMobileHudOpen(false)
-          }}
-        >
-          <span className="dock-icon">◈</span>
-          <span className="dock-label">Source</span>
-        </a>
+        {/* Rank Progress Strip */}
+        <section className="rank-banner">
+          <div className="container rank-banner-inner">
+            <div className="rank-info">
+              <span className="mono-label">OPERATIVE PROGRESSION</span>
+              <strong>
+                Rank {rank.name} · {points} / {nextRank ? nextRank.min : points} Points
+              </strong>
+            </div>
+            <div className="rank-bar-wrap">
+              <div className="rank-bar">
+                <span style={{ width: `${progressToNext}%` }} />
+              </div>
+              <div className="rank-tiers">
+                {ranks.map((r) => (
+                  <span key={r.name} className={points >= r.min ? 'tier active' : 'tier'}>
+                    {r.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <button
-          type="button"
-          className={`dock-item ${mobileHudOpen ? 'active' : ''}`}
-          onClick={() => setMobileHudOpen((open) => !open)}
-          aria-expanded={mobileHudOpen}
-        >
-          <span className="dock-icon">❖</span>
-          <span className="dock-label">HUD · {rank.name}</span>
-        </button>
-      </nav>
+        {/* Languages Curriculum Section */}
+        <section className="section" id="languages">
+          <div className="container">
+            <div className="section-head">
+              <div>
+                <span className="section-kicker">CURRICULUM TRACKS</span>
+                <h2>Six foundational languages. Zero fluff.</h2>
+              </div>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => startChallenge(currentLanguage.name)}
+              >
+                Practice {currentLanguage.name} →
+              </button>
+            </div>
+
+            <div className="lang-grid">
+              {languages.map((lang) => (
+                <button
+                  type="button"
+                  key={lang.name}
+                  className={`lang-card ${activeLanguage === lang.name ? 'selected' : ''}`}
+                  onClick={() => handleSelectLanguage(lang.name)}
+                  aria-pressed={activeLanguage === lang.name}
+                >
+                  <div className="lang-card-top">
+                    <span className="lang-badge">{lang.symbol}</span>
+                    <span className="lang-tag">{lang.tag}</span>
+                  </div>
+                  <h3>{lang.name}</h3>
+                  <p className="lang-topic">Up next: {lang.topic}</p>
+                  <div className="lang-progress">
+                    <span style={{ width: `${lang.progress}%` }} />
+                  </div>
+                  <div className="lang-meta">
+                    <span>{lang.progress}% complete</span>
+                    <span>{lang.lessons} lessons</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive Challenge Arena */}
+        <section className="section arena-band" id="arena">
+          <div className="container arena-grid">
+            <div className="arena-copy">
+              <span className="section-kicker">INTERACTIVE SANDBOX</span>
+              <h2>Prove what you know in the Challenge Arena.</h2>
+              <p>
+                Test your instincts with rapid-fire foundation checks across all six languages. Every
+                correct answer adds +25 points to your rank score.
+              </p>
+              <div className="arena-pills">
+                <span>⚡ +25 PTS PER SOLVE</span>
+                <span>◷ INSTANT FEEDBACK</span>
+              </div>
+            </div>
+
+            <div className="challenge-box">
+              <div className="challenge-head">
+                <span className="challenge-badge">LIVE CHECK · {challenge.language.toUpperCase()}</span>
+                <span className="challenge-step">
+                  Q{challengeIndex + 1} / {challenges.length}
+                </span>
+              </div>
+              <h3>{challenge.prompt}</h3>
+
+              <div className="options-grid">
+                {challenge.options.map((option, idx) => (
+                  <button
+                    type="button"
+                    key={option}
+                    className={`option-btn ${selectedAnswer === option ? 'is-selected' : ''} ${
+                      answered && option === challenge.answer ? 'is-correct' : ''
+                    } ${
+                      answered && selectedAnswer === option && option !== challenge.answer ? 'is-wrong' : ''
+                    }`}
+                    onClick={() => !answered && setSelectedAnswer(option)}
+                    disabled={answered}
+                  >
+                    <span className="opt-key">{String.fromCharCode(65 + idx)}</span>
+                    <span className="opt-val">{option}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="challenge-actions">
+                <span className="challenge-notice" aria-live="polite">
+                  {notice || 'Select an option to verify your answer'}
+                </span>
+                {answered ? (
+                  <button type="button" className="btn btn-primary" onClick={nextChallenge}>
+                    Next Question →
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={submitAnswer}
+                    disabled={!selectedAnswer}
+                  >
+                    Submit Answer →
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The Source Wall */}
+        <section className="section source-wall-section" id="source-wall">
+          <div className="container">
+            <div className="section-head light-head">
+              <div>
+                <span className="section-kicker">CURATED EXTERNAL ARCHIVES</span>
+                <h2>The Source Wall</h2>
+                <p className="source-sub">
+                  Hand-picked university lectures, video tracks, and interactive labs beyond the core
+                  syllabus.
+                </p>
+              </div>
+              <span className="mono-label">VERIFIED RELAYS ↗</span>
+            </div>
+
+            <div className="source-grid">
+              {resources.map((res) => (
+                <a
+                  key={res.name}
+                  href={res.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="source-card"
+                >
+                  <div className="source-card-top">
+                    <span className="source-mark">{res.mark}</span>
+                    <span className="source-type">{res.type}</span>
+                  </div>
+                  <h3>{res.name}</h3>
+                  <p>{res.description}</p>
+                  <div className="source-card-foot">
+                    <span>{res.meta}</span>
+                    <span>Visit ↗</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Startup Footer */}
+      <footer className="site-footer">
+        <div className="container footer-inner">
+          <a className="brand" href="#top">
+            <BrandShield />
+            <span>
+              lesh<span className="brand-thin">devs</span>
+            </span>
+          </a>
+          <p>Foundations of programming — Python, Java, HTML, CSS, JavaScript &amp; C.</p>
+          <a className="back-top" href="#top">
+            Back to top ↑
+          </a>
+        </div>
+      </footer>
     </div>
   )
 }
