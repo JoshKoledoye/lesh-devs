@@ -337,7 +337,7 @@ export default function App() {
                   aria-pressed={activeLanguage === lang.name}
                 >
                   <div className="lang-card-top">
-                    <span className="lang-badge">{lang.symbol}</span>
+                   <LanguageLogoSlot language={lang} />
                     <span className="lang-tag">{lang.tag}</span>
                   </div>
                   <h3>{lang.name}</h3>
