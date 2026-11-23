@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import './styles.css'
 
 const languages = [
-  { name: 'Python', symbol: 'Py', logoSrc: '/logos/python.svg', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
-  { name: 'Java', symbol: 'Jv', logoSrc: '/logos/java.svg', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
-  { name: 'HTML', symbol: '5', logoSrc: '/logos/html.svg', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
-  { name: 'CSS', symbol: '3', logoSrc: '/logos/css.svg', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
-  { name: 'JavaScript', symbol: 'JS', logoSrc: '/logos/javascript.svg', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
-  { name: 'C', symbol: 'C', logoSrc: '/logos/c.svg', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
+  { name: 'Python', symbol: 'Py', logoSrc: '/python.svg', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
+  { name: 'Java', symbol: 'Jv', logoSrc: '/java-4-logo.svg', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
+  { name: 'HTML', symbol: '5', logoSrc: '/HTML.webp', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
+  { name: 'CSS', symbol: '3', logoSrc: '/CSS.webp', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
+  { name: 'JavaScript', symbol: 'JS', logoSrc: '/javascript.webp', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
+  { name: 'C', symbol: 'C', logoSrc: '/c.png', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
 ]
 
 const challenges = [
