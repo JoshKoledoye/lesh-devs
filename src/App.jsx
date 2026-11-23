@@ -7,7 +7,7 @@ const languages = [
   { name: 'HTML', symbol: '5', logoSrc: '/HTML.webp', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
   { name: 'CSS', symbol: '3', logoSrc: '/CSS.webp', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
   { name: 'JavaScript', symbol: 'JS', logoSrc: '/javascript.webp', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
-  { name: 'C', symbol: 'C', logoSrc: '/c.png', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
+  { name: 'C', symbol: 'C', logoSrc: '/C.png', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
 ]
 
 const challenges = [
