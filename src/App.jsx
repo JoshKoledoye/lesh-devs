@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
 import './styles.css'
+import pythonLogo from './python.svg'
+import javaLogo from './java-4-logo.svg'
+import htmlLogo from './HTML.webp'
+import cssLogo from './CSS.webp'
+import jsLogo from './javascript.webp'
+import cLogo from './C.png'
 
 const languages = [
-  { name: 'Python', symbol: 'Py', logoSrc: '/python.svg', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
-  { name: 'Java', symbol: 'Jv', logoSrc: '/java-4-logo.svg', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
-  { name: 'HTML', symbol: '5', logoSrc: '/HTML.webp', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
-  { name: 'CSS', symbol: '3', logoSrc: '/CSS.webp', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
-  { name: 'JavaScript', symbol: 'JS', logoSrc: '/javascript.webp', lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
-  { name: 'C', symbol: 'C', logoSrc: '/C.png', lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
+  { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
+  { name: 'Java', symbol: 'Jv', logoSrc: javaLogo, lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
+  { name: 'HTML', symbol: '5', logoSrc: htmlLogo, lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
+  { name: 'CSS', symbol: '3', logoSrc: cssLogo, lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
+  { name: 'JavaScript', symbol: 'JS', logoSrc: jsLogo, lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
+  { name: 'C', symbol: 'C', logoSrc: cLogo, lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
 ]
 
 const challenges = [
