@@ -90,6 +90,10 @@ function BrandShield() {
 function LanguageLogoSlot({ language }) {
   const [imgError, setImgError] = useState(false)
 
+  useEffect(() => {
+    setImgError(false)
+  }, [language.logoSrc])
+
   return (
     <div className="lang-logo-slot" aria-hidden="true">
       {!imgError && language.logoSrc ? (
