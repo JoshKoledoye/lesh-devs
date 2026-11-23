@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './styles.css'
 
 const languages = [
-  { name: 'Python', symbol: 'Pi', logoSrc: '/python.svg', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
+  { name: 'Python', symbol: 'Py', logoSrc: '/python.svg', lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
   { name: 'Java', symbol: 'Jv', logoSrc: '/java-4-logo.svg', lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
   { name: 'HTML', symbol: '5', logoSrc: '/HTML.webp', lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
   { name: 'CSS', symbol: '3', logoSrc: '/CSS.webp', lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
