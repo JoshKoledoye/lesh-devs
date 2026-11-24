@@ -100,6 +100,14 @@ export default function CodeEditor({
   )
 
   useEffect(() => {
+    if (!isOpen) return
+    const nextLang = starterCode[initialLanguage] ? initialLanguage : 'Python'
+    setSelectedLang(nextLang)
+    setResult(executeSnippet(nextLang, codes[nextLang], codes.HTML, codes.CSS))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, initialLanguage])
+
+  useEffect(() => {
     if (!isOpen || !onClose) return
     function handleKeyDown(e) {
       if (e.key === 'Escape') onClose()
