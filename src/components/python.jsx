@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import CodeBlock from './CodeBlock'
 
@@ -8,28 +7,28 @@ const PYTHON_LEVELS = [
     levelTag: 'LEVEL 01',
     title: 'History, Early Uses & Why Python Leads in AI/ML',
     summary:
-      'Created by Guido van Rossum in 1989–1991, Python started as a readable scripting tool and grew into a top language for web apps, data, and AI/Machine Learning.',
+      'Created by Guido van Rossum in 1989–1991, Python started as a clear scripting tool and grew into a top language for web apps, automation, data, and AI/Machine Learning.',
     sections: [
       {
         heading: 'Guido van Rossum & Python’s Start',
-        body: 'Dutch programmer Guido van Rossum began building Python in December 1989 and released the first public version in February 1991. He named it after Monty Python—not the snake—and focused on clean, easy-to-read code.',
+        body: 'Dutch programmer Guido van Rossum began building Python in December 1989 and released the first public version in February 1991. He named it after Monty Python—not the snake—and designed it so code is easy to read and write.',
       },
       {
         heading: 'Early Uses vs. Today',
-        body: 'At first, Python was mostly used to automate daily tasks, glue scripts together, and write clear helper programs. Today, it powers web backends, data analysis, automation, and AI/ML systems.',
+        body: 'At first, Python was mostly used to automate daily tasks, glue scripts together, and write simple helper tools. Today, developers use it for web backends, data analysis, automation, and AI/Machine Learning.',
       },
       {
         heading: 'Why Python Is Huge in AI & Machine Learning',
-        body: 'AI and ML need lots of fast experiments and heavy math. Python lets developers test ideas quickly, use libraries like NumPy, Pandas, scikit-learn, PyTorch, and TensorFlow, and rely on fast C/C++ code working behind the scenes.',
+        body: 'AI and ML require fast experiments and heavy math. Python lets you test ideas quickly, use libraries like NumPy, Pandas, scikit-learn, PyTorch, and TensorFlow, and run heavy calculations on fast C/C++ code working under the hood.',
       },
     ],
     checkpoints: [
-      'Guido van Rossum created Python and released it publicly in 1991 with readability in mind.',
-      'Python began mainly as a scripting and automation tool before expanding into full software and data work.',
-      'In AI and ML, Python shines because you can test models fast, use rich libraries, and run heavy math efficiently underneath.',
+      'Guido van Rossum created Python and released it publicly in 1991 with readability first.',
+      'Python began mainly as a scripting and automation language before expanding into full software and data work.',
+      'In AI and ML, Python stands out because you can test models fast, use strong libraries, and run heavy math efficiently underneath.',
     ],
     code: `# Level 01: Your first Python check-in\ncreator = "Guido van Rossum"\nmain_use = "AI and Machine Learning"\n\nprint("Created by:", creator)\nprint("Popular today for:", main_use)`,
-    tryTask: 'Change main_use to another area you like (such as "Web APIs") and run it in the Code Editor.',
+    tryTask: 'Change main_use to another area you like (such as "Web APIs") and click "Open in Editor".',
     question: {
       prompt: 'Why is Python so widely used in Artificial Intelligence (AI) and Machine Learning (ML)?',
       options: [
@@ -51,11 +50,11 @@ const PYTHON_LEVELS = [
     sections: [
       {
         heading: 'Storing Values in Variables',
-        body: 'Think of a variable as a labeled box in memory. You assign a value using =, such as course_name = "Python Basics".',
+        body: 'Think of a variable as a labeled box in memory. You put a value inside it using =, such as course_name = "Python Basics".',
       },
       {
         heading: 'Core Data Types',
-        body: 'Strings (str) hold text in quotes, integers (int) hold whole numbers, floats (float) hold decimal numbers, and booleans (bool) hold True or False.',
+        body: 'Strings (str) hold text in quotes, integers (int) hold whole numbers without decimals, floats (float) hold decimal numbers, and booleans (bool) hold True or False.',
       },
     ],
     checkpoints: [
@@ -215,26 +214,13 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
             </ul>
           </div>
 
-          <div className="hero-code-card">
-            <div className="code-header">
-              <span>lesson_{level.id}.py</span>
-              {onOpenEditor && (
-                <button
-                  type="button"
-                  className="mini-btn run"
-                  onClick={() => onOpenEditor('Python', level.code)}
-                >
-                  Open in Code Editor ↗
-                </button>
-              )}
-            </div>
-            <pre className="code-body">
-              <code>{level.code}</code>
-            </pre>
-            <div className="code-footer">
-              <span>TRY IT: {level.tryTask}</span>
-            </div>
-          </div>
+          <CodeBlock
+            code={level.code}
+            filename={`lesson_${level.id}.py`}
+            language="Python"
+            tryTask={level.tryTask}
+            onOpenEditor={onOpenEditor}
+          />
 
           <div>
             <span className="section-kicker">UNDERSTANDING CHECK</span>
