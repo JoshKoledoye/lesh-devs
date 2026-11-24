@@ -787,3 +787,45 @@ body {
   object-fit: contain;
   display: block;
 }
+
+.editor-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.editor-modal-dialog {
+  width: 100%;
+  max-width: 1120px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 28px;
+  box-shadow: 0 28px 70px rgba(2, 12, 51, 0.45);
+}
+
+.editor-modal-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-close-btn {
+  padding: 8px 14px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--royal);
+  color: var(--white);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
