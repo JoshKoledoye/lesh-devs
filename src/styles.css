@@ -276,7 +276,7 @@ body {
   color: var(--muted);
 }
 
-/* Cool Code Palette Window (#071361 + #000000 + #FFFFFF) */
+/* Cool Code Palette Window (#020C33 + #000000 + #FFFFFF) */
 .hero-code-card {
   background: var(--black);
   color: var(--white);
@@ -533,6 +533,24 @@ body {
   color: var(--muted);
 }
 
+.lang-logo-slot {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 3vh;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.lang-logo-img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  display: block;
+}
+
 /* Challenge Arena */
 .arena-grid {
   display: grid;
@@ -651,7 +669,7 @@ body {
   color: var(--muted);
 }
 
-/* The Source Wall (#071361 + #000000 + #FFFFFF) */
+/* The Source Wall */
 .source-wall-section {
   background: linear-gradient(160deg, var(--black) 0%, var(--royal) 100%);
   color: var(--white);
@@ -716,6 +734,192 @@ body {
   flex: 1;
 }
 
+/* CodeEditor / Scratchpad Workspace & Modal */
+.holomat-lang-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.holo-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.holo-tab.active {
+  background: var(--royal);
+  color: var(--white);
+  border-color: var(--royal);
+}
+
+[data-theme='dark'] .holo-tab.active {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.holomat-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--black);
+  color: var(--white);
+  min-height: 380px;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.output-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+}
+
+.pane-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 16px;
+  background: var(--royal);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.pane-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mini-btn {
+  padding: 5px 10px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.mini-btn.run {
+  background: var(--white);
+  color: var(--royal);
+  border-color: var(--white);
+}
+
+.code-textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 330px;
+  padding: 18px 20px;
+  background: var(--black);
+  color: var(--white);
+  border: 0;
+  resize: vertical;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  line-height: 1.68;
+  outline: none;
+}
+
+.console-screen {
+  flex: 1;
+  padding: 18px 20px;
+  background: #040712;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.console-line {
+  display: flex;
+  gap: 10px;
+  color: var(--white);
+}
+
+.prompt-char {
+  color: #7c9aff;
+  font-weight: 700;
+}
+
+.holo-preview-frame {
+  width: 100%;
+  flex: 1;
+  min-height: 330px;
+  border: 0;
+  background: var(--white);
+}
+
+.editor-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.editor-modal-dialog {
+  width: 100%;
+  max-width: 1140px;
+  max-height: 88vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 24px 28px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+}
+
+.editor-modal-dialog .section-head {
+  margin-bottom: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+
+.editor-modal-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-close-btn {
+  padding: 8px 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--royal);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+}
+
 /* Footer */
 .site-footer {
   padding: 36px 0;
@@ -753,8 +957,21 @@ body {
   .hero-grid,
   .arena-grid,
   .lang-grid,
-  .source-grid {
+  .source-grid,
+  .holomat-workspace {
     grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .editor-pane {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .output-pane,
+  .code-textarea,
+  .holo-preview-frame {
+    min-height: 220px;
   }
 
   .rank-banner-inner,
@@ -768,64 +985,4 @@ body {
   .options-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.lang-logo-slot {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 3vh;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.lang-logo-img {
-  width: 35px;
-  height: 35px;
-  object-fit: contain;
-  display: block;
-}
-
-.editor-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: rgba(0, 0, 0, 0.72);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  overflow-y: auto;
-}
-
-.editor-modal-dialog {
-  width: 100%;
-  max-width: 1120px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 28px;
-  box-shadow: 0 28px 70px rgba(2, 12, 51, 0.45);
-}
-
-.editor-modal-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
-
-.modal-close-btn {
-  padding: 8px 14px;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: var(--royal);
-  color: var(--white);
-  border: 1px solid var(--border);
-  cursor: pointer;
 }
