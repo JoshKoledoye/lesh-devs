@@ -119,6 +119,7 @@ export default function App() {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [answered, setAnswered] = useState(false)
   const [notice, setNotice] = useState('')
+  const [isEditorOpen, setIsEditorOpen] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -197,7 +198,15 @@ export default function App() {
             <a href="#languages">Curriculum</a>
             <a href="#arena">Challenge Arena</a>
             <a href="#source-wall">The Source Wall</a>
-            <a href="#code-editor">Code Editor</a>
+            <a
+        href="#code-editor"
+        onClick={(e) => {
+        e.preventDefault()
+        setIsEditorOpen(true)
+        }}
+        >
+        Code Editor
+</a>
           </nav>
 
           <div className="nav-actions">
