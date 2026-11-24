@@ -6,6 +6,7 @@ import htmlLogo from './HTML.webp'
 import cssLogo from './CSS.webp'
 import jsLogo from './javascript.webp'
 import cLogo from './C.png'
+import CodeEditor from './components/CodeEditor'
 
 const languages = [
   { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
@@ -196,6 +197,7 @@ export default function App() {
             <a href="#languages">Curriculum</a>
             <a href="#arena">Challenge Arena</a>
             <a href="#source-wall">The Source Wall</a>
+            <a href="#code-editor">Code Editor</a>
           </nav>
 
           <div className="nav-actions">
