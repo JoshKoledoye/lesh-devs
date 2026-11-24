@@ -122,6 +122,8 @@ export default function App() {
   const [answered, setAnswered] = useState(false)
   const [notice, setNotice] = useState('')
   const [isEditorOpen, setIsEditorOpen] = useState(false)
+  const [editorSnippet, setEditorSnippet] = useState('')
+  const [completedPythonLevels, setCompletedPythonLevels] = useState([])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -140,6 +142,14 @@ export default function App() {
   const challenge = challenges[challengeIndex]
   const currentLanguage = languages.find((language) => language.name === activeLanguage) || languages[0]
 
+  function awardPoints(amount) {
+    setPoints((prev) => {
+      const updated = prev + amount
+      localStorage.setItem('leshdevs-points', String(updated))
+      return updated
+    })
+  }
+
   function toggleDarkMode() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
@@ -148,9 +158,7 @@ export default function App() {
     if (!selectedAnswer || answered) return
     setAnswered(true)
     if (selectedAnswer === challenge.answer) {
-      const updatedPoints = points + 25
-      setPoints(updatedPoints)
-      localStorage.setItem('leshdevs-points', String(updatedPoints))
+      awardPoints(25)
       setNotice('Correct! +25 XP added to your profile.')
     } else {
       setNotice(`Not quite — the answer is ${challenge.answer}. Try the next one.`)
@@ -182,6 +190,23 @@ export default function App() {
       setAnswered(false)
       setNotice('')
     }
+    if (name === 'Python') {
+      document.querySelector('#python-track')?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  function handleOpenEditorFromLesson(language, snippet) {
+    if (language) setActiveLanguage(language)
+    if (typeof snippet === 'string') setEditorSnippet(snippet)
+    setIsEditorOpen(true)
+  }
+
+  function handleCompletePythonLevel(levelId) {
+    setCompletedPythonLevels((prev) => {
+      if (prev.includes(levelId)) return prev
+      awardPoints(25)
+      return [...prev, levelId]
+    })
   }
 
   return (
@@ -197,6 +222,7 @@ export default function App() {
 
           <nav className="nav-links" aria-label="Primary Navigation">
             <a href="#languages">Curriculum</a>
+            <a href="#python-track">Python Pilot</a>
             <a href="#arena">Challenge Arena</a>
             <a href="#source-wall">The Source Wall</a>
             <a
@@ -223,8 +249,8 @@ export default function App() {
               <span>{theme === 'dark' ? '☀' : '☾'}</span>
               <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
             </button>
-            <a className="nav-cta" href="#arena">
-              Start Coding
+            <a className="nav-cta" href="#python-track">
+              Start Learning
             </a>
           </div>
         </div>
@@ -246,8 +272,8 @@ export default function App() {
                 Python, Java, HTML, CSS, JavaScript, and C.
               </p>
               <div className="hero-cta-row">
-                <a className="btn btn-primary" href="#languages">
-                  Explore Curriculum <span>→</span>
+                <a className="btn btn-primary" href="#python-track">
+                  Start Python Pilot <span>→</span>
                 </a>
                 <a className="btn btn-outline" href="#arena">
                   Try Live Challenge
@@ -260,8 +286,8 @@ export default function App() {
                   <span>Core Languages</span>
                 </div>
                 <div>
-                  <strong>64</strong>
-                  <span>Structured Lessons</span>
+                  <strong>{completedPythonLevels.length}/3</strong>
+                  <span>Python Levels Done</span>
                 </div>
                 <div>
                   <strong>Rank {rank.name}</strong>
@@ -372,6 +398,11 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        <PythonTrack
+          onOpenEditor={handleOpenEditorFromLesson}
+          onCompleteLevel={handleCompletePythonLevel}
+        />
 
         <section className="section arena-band" id="arena">
           <div className="container arena-grid">
@@ -496,6 +527,7 @@ export default function App() {
 
       <CodeEditor
         initialLanguage={activeLanguage}
+        initialCode={editorSnippet}
         isOpen={isEditorOpen}
         onClose={() => setIsEditorOpen(false)}
       />
