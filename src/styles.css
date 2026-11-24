@@ -1099,3 +1099,168 @@ body {
     max-height: 82vh;
   }
 }
+
+/* VS Code-style Code Snippet Block */
+.vscode-block {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: 1px solid #2d2d30;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 16px 0;
+  box-shadow: 0 12px 30px rgba(2, 12, 51, 0.22);
+}
+
+.vscode-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #252526;
+  border-bottom: 1px solid #333333;
+  font-size: 0.85rem;
+}
+
+.vscode-window-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.vscode-window-dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.vscode-file {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.vscode-lang-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #020c33;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.vscode-open-btn {
+  background: #0e639c;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vscode-open-btn:hover {
+  background: #1177bb;
+}
+
+/* Color key so learners know what each color means */
+.vscode-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #181818;
+  border-bottom: 1px solid #2b2b2b;
+  font-size: 0.75rem;
+  color: #b5b5b5;
+}
+
+.vscode-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.vscode-legend .swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.swatch.kw { background: #569cd6; }
+.swatch.vr { background: #9cdcfe; }
+.swatch.fn { background: #dcdcaa; }
+.swatch.st { background: #ce9178; }
+.swatch.nm { background: #b5cea8; }
+.swatch.cm { background: #6a9955; }
+
+.vscode-editor-body {
+  padding: 12px 0;
+  overflow-x: auto;
+}
+
+.vscode-pre {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.vscode-line {
+  display: flex;
+  padding: 0 14px 0 0;
+}
+
+.vscode-line:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.vscode-ln {
+  min-width: 44px;
+  padding-right: 14px;
+  text-align: right;
+  user-select: none;
+  color: #6e7681;
+}
+
+.vscode-code-content {
+  white-space: pre;
+}
+
+/* VS Code Dark+ Syntax Colors */
+.tok-keyword { color: #569cd6; font-weight: 500; }
+.tok-variable { color: #9cdcfe; }
+.tok-identifier { color: #9cdcfe; }
+.tok-function,
+.tok-builtin { color: #dcdcaa; }
+.tok-string { color: #ce9178; }
+.tok-number { color: #b5cea8; }
+.tok-comment { color: #6a9955; font-style: italic; }
+.tok-operator { color: #d4d4d4; }
+.tok-punctuation { color: #d4d4d4; }
+.tok-plain { color: #d4d4d4; }
+
+.vscode-footer {
+  padding: 10px 14px;
+  background: #252526;
+  border-top: 1px solid #333333;
+  font-size: 0.84rem;
+  color: #e2e8f0;
+}
+
+/* Dedicated Lessons Page bar */
+.lessons-page-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 12px;
+}
