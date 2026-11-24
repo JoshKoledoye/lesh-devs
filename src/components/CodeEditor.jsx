@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const starterCode = {
   Python: `def greet(name):\n    print("Hello,", name)\n\ngreet("LeshDevs")\n`,
@@ -58,7 +57,6 @@ function executeSnippet(language, code, htmlCode, cssCode) {
     }
   }
 
-  // Basic client-side print preview for Python, Java, and C
   const lines = []
   for (const rawLine of code.split('\n')) {
     const line = rawLine.trim()
@@ -83,7 +81,11 @@ function executeSnippet(language, code, htmlCode, cssCode) {
   return { type: 'console', srcDoc: '', output: lines }
 }
 
-export default function CodeEditor({ initialLanguage = 'Python' }) {
+export default function CodeEditor({
+  initialLanguage = 'Python',
+  isOpen = true,
+  onClose,
+}) {
   const [selectedLang, setSelectedLang] = useState(
     starterCode[initialLanguage] ? initialLanguage : 'Python'
   )
@@ -91,11 +93,22 @@ export default function CodeEditor({ initialLanguage = 'Python' }) {
   const [result, setResult] = useState(() =>
     executeSnippet(
       starterCode[initialLanguage] ? initialLanguage : 'Python',
-      codes[starterCode[initialLanguage] ? initialLanguage : 'Python'],
+      starterCode[starterCode[initialLanguage] ? initialLanguage : 'Python'],
       starterCode.HTML,
       starterCode.CSS
     )
   )
+
+  useEffect(() => {
+    if (!isOpen || !onClose) return
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
+  if (!isOpen) return null
 
   function handleLanguageSwitch(lang) {
     setSelectedLang(lang)
@@ -112,15 +125,21 @@ export default function CodeEditor({ initialLanguage = 'Python' }) {
     setResult(executeSnippet(selectedLang, resetVal, codes.HTML, codes.CSS))
   }
 
-  return (
-    <section className="section" id="code-editor">
-      <div className="container">
-        <div className="section-head">
-          <div>
-            <span className="section-kicker">STANDALONE CODE EDITOR</span>
-            <h2>Quick Scratchpad</h2>
-          </div>
+  const editorBody = (
+    <div
+      className={onClose ? 'editor-modal-dialog' : 'container'}
+      role={onClose ? 'dialog' : undefined}
+      aria-modal={onClose ? 'true' : undefined}
+      aria-label="Code Editor"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="section-head">
+        <div>
+          <span className="section-kicker">CODE EDITOR MODAL</span>
+          <h2>Quick Scratchpad</h2>
+        </div>
 
+        <div className="editor-modal-controls">
           <div className="holomat-lang-tabs" role="tablist" aria-label="Editor Languages">
             {langList.map((lang) => (
               <button
@@ -135,58 +154,87 @@ export default function CodeEditor({ initialLanguage = 'Python' }) {
               </button>
             ))}
           </div>
-        </div>
 
-        <div className="holomat-workspace">
-          <div className="editor-pane">
-            <div className="pane-bar">
-              <span>{selectedLang.toUpperCase()} BUFFER</span>
-              <div className="pane-actions">
-                <button type="button" className="mini-btn" onClick={handleReset}>
-                  Reset
-                </button>
-                <button type="button" className="mini-btn run" onClick={handleRun}>
-                  Run ▶
-                </button>
-              </div>
-            </div>
-            <textarea
-              className="code-textarea"
-              value={codes[selectedLang]}
-              onChange={(e) =>
-                setCodes((prev) => ({ ...prev, [selectedLang]: e.target.value }))
-              }
-              spellCheck={false}
-              aria-label={`${selectedLang} scratchpad editor`}
-            />
-          </div>
-
-          <div className="output-pane">
-            <div className="pane-bar">
-              <span>{result.type === 'preview' ? 'PREVIEW' : 'OUTPUT'}</span>
-              <span>BASIC RUNNER</span>
-            </div>
-
-            {result.type === 'preview' ? (
-              <iframe
-                title="Scratchpad Live Preview"
-                className="holo-preview-frame"
-                srcDoc={result.srcDoc}
-                sandbox="allow-scripts"
-              />
-            ) : (
-              <div className="console-screen">
-                {result.output.map((line, i) => (
-                  <div key={i} className="console-line">
-                    <span className="prompt-char">&gt;</span>
-                    <span>{line}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {onClose && (
+            <button
+              type="button"
+              className="modal-close-btn"
+              onClick={onClose}
+              aria-label="Close code editor modal"
+            >
+              ✕ Close
+            </button>
+          )}
         </div>
       </div>
-    </section>
+
+      <div className="holomat-workspace">
+        <div className="editor-pane">
+          <div className="pane-bar">
+            <span>{selectedLang.toUpperCase()} BUFFER</span>
+            <div className="pane-actions">
+              <button type="button" className="mini-btn" onClick={handleReset}>
+                Reset
+              </button>
+              <button type="button" className="mini-btn run" onClick={handleRun}>
+                Run ▶
+              </button>
+            </div>
+          </div>
+          <textarea
+            className="code-textarea"
+            value={codes[selectedLang]}
+            onChange={(e) =>
+              setCodes((prev) => ({ ...prev, [selectedLang]: e.target.value }))
+            }
+            spellCheck={false}
+            aria-label={`${selectedLang} scratchpad editor`}
+          />
+        </div>
+
+        <div className="output-pane">
+          <div className="pane-bar">
+            <span>{result.type === 'preview' ? 'PREVIEW' : 'OUTPUT'}</span>
+            <span>BASIC RUNNER</span>
+          </div>
+
+          {result.type === 'preview' ? (
+            <iframe
+              title="Scratchpad Live Preview"
+              className="holo-preview-frame"
+              srcDoc={result.srcDoc}
+              sandbox="allow-scripts"
+            />
+          ) : (
+            <div className="console-screen">
+              {result.output.map((line, i) => (
+                <div key={i} className="console-line">
+                  <span className="prompt-char">&gt;</span>
+                  <span>{line}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
+  if (!onClose) {
+    return (
+      <section className="section" id="code-editor">
+        {editorBody}
+      </section>
+    )
+  }
+
+  return (
+    <div
+      className="editor-modal-backdrop"
+      onClick={onClose}
+      role="presentation"
+    >
+      {editorBody}
+    </div>
   )
 }
