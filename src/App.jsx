@@ -7,6 +7,7 @@ import cssLogo from './CSS.webp'
 import jsLogo from './javascript.webp'
 import cLogo from './C.png'
 import CodeEditor from './components/CodeEditor'
+import PythonTrack from './components/python'
 
 const languages = [
   { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
