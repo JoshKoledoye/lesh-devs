@@ -72,7 +72,7 @@ function BrandShield() {
       <svg viewBox="0 0 48 54" width="28" height="32">
         <path
           d="M24 2 L45 9 L39 38 L24 52 L9 38 L3 9 Z"
-          fill="#071361"
+          fill="#020C33"
           stroke="#ffffff"
           strokeWidth="2.2"
         />
@@ -88,6 +88,7 @@ function BrandShield() {
     </span>
   )
 }
+
 function LanguageLogoSlot({ language }) {
   const [imgError, setImgError] = useState(false)
 
@@ -184,7 +185,6 @@ export default function App() {
 
   return (
     <div className="site-shell" data-theme={theme}>
-      {/* Startup Sticky Top Navbar */}
       <header className="navbar">
         <div className="nav-inner">
           <a className="brand" href="#top" aria-label="LeshDevs Home">
@@ -199,20 +199,15 @@ export default function App() {
             <a href="#arena">Challenge Arena</a>
             <a href="#source-wall">The Source Wall</a>
             <a
-        href="#code-editor"
-        onClick={(e) => {
-        e.preventDefault()
-        setIsEditorOpen(true)
-        }}
-        >
-        Code Editor
-</a>
+              href="#code-editor"
+              onClick={(e) => {
+                e.preventDefault()
+                setIsEditorOpen(true)
+              }}
+            >
+              Code Editor
+            </a>
           </nav>
-          <CodeEditor
-  initialLanguage={activeLanguage}
-  isOpen={isEditorOpen}
-  onClose={() => setIsEditorOpen(false)}
-/>
 
           <div className="nav-actions">
             <span className="rank-pill" title="Your current rank and points">
@@ -235,7 +230,6 @@ export default function App() {
       </header>
 
       <main id="top">
-        {/* Startup Hero Section */}
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
@@ -275,7 +269,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Cool Code Editor Visual */}
             <div className="hero-code-card" aria-label="Interactive code preview">
               <div className="code-header">
                 <div className="code-dots">
@@ -312,7 +305,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Rank Progress Strip */}
         <section className="rank-banner">
           <div className="container rank-banner-inner">
             <div className="rank-info">
@@ -336,7 +328,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Languages Curriculum Section */}
         <section className="section" id="languages">
           <div className="container">
             <div className="section-head">
@@ -363,7 +354,7 @@ export default function App() {
                   aria-pressed={activeLanguage === lang.name}
                 >
                   <div className="lang-card-top">
-                   <LanguageLogoSlot language={lang} />
+                    <LanguageLogoSlot language={lang} />
                     <span className="lang-tag">{lang.tag}</span>
                   </div>
                   <h3>{lang.name}</h3>
@@ -381,7 +372,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Interactive Challenge Arena */}
         <section className="section arena-band" id="arena">
           <div className="container arena-grid">
             <div className="arena-copy">
@@ -448,7 +438,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* The Source Wall */}
         <section className="section source-wall-section" id="source-wall">
           <div className="container">
             <div className="section-head light-head">
@@ -489,7 +478,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* Startup Footer */}
       <footer className="site-footer">
         <div className="container footer-inner">
           <a className="brand" href="#top">
@@ -504,6 +492,12 @@ export default function App() {
           </a>
         </div>
       </footer>
+
+      <CodeEditor
+        initialLanguage={activeLanguage}
+        isOpen={isEditorOpen}
+        onClose={() => setIsEditorOpen(false)}
+      />
     </div>
   )
 }
