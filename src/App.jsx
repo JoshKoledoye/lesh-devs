@@ -208,6 +208,11 @@ export default function App() {
         Code Editor
 </a>
           </nav>
+          <CodeEditor
+  initialLanguage={activeLanguage}
+  isOpen={isEditorOpen}
+  onClose={() => setIsEditorOpen(false)}
+/>
 
           <div className="nav-actions">
             <span className="rank-pill" title="Your current rank and points">
