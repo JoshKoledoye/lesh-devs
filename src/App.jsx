@@ -7,10 +7,10 @@ import cssLogo from './CSS.webp'
 import jsLogo from './javascript.webp'
 import cLogo from './C.png'
 import CodeEditor from './components/CodeEditor'
-import PythonTrack from './components/python'
+import LessonsPage from './pages/LessonsPage'
 
 const languages = [
-  { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'Loops & iteration', code: '01', tag: 'Scripting & AI' },
+  { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'History, syntax & AI/ML', code: '01', tag: 'Scripting & AI' },
   { name: 'Java', symbol: 'Jv', logoSrc: javaLogo, lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
   { name: 'HTML', symbol: '5', logoSrc: htmlLogo, lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
   { name: 'CSS', symbol: '3', logoSrc: cssLogo, lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
@@ -114,6 +114,7 @@ function LanguageLogoSlot({ language }) {
 }
 
 export default function App() {
+  const [page, setPage] = useState('home') // 'home' | 'lessons'
   const [theme, setTheme] = useState(() => localStorage.getItem('leshdevs-theme') || 'light')
   const [activeLanguage, setActiveLanguage] = useState(() => localStorage.getItem('leshdevs-lang') || 'Python')
   const [points, setPoints] = useState(() => Number(localStorage.getItem('leshdevs-points')) || 420)
@@ -141,6 +142,17 @@ export default function App() {
     : 100
   const challenge = challenges[challengeIndex]
   const currentLanguage = languages.find((language) => language.name === activeLanguage) || languages[0]
+
+  function navigateToPage(targetPage, selector = '') {
+    setPage(targetPage)
+    requestAnimationFrame(() => {
+      if (selector) {
+        document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    })
+  }
 
   function awardPoints(amount) {
     setPoints((prev) => {
@@ -178,7 +190,7 @@ export default function App() {
     setSelectedAnswer('')
     setAnswered(false)
     setNotice('')
-    document.querySelector('#arena')?.scrollIntoView({ behavior: 'smooth' })
+    navigateToPage('home', '#arena')
   }
 
   function handleSelectLanguage(name) {
@@ -191,7 +203,7 @@ export default function App() {
       setNotice('')
     }
     if (name === 'Python') {
-      document.querySelector('#python-track')?.scrollIntoView({ behavior: 'smooth' })
+      navigateToPage('lessons')
     }
   }
 
@@ -213,7 +225,15 @@ export default function App() {
     <div className="site-shell" data-theme={theme}>
       <header className="navbar">
         <div className="nav-inner">
-          <a className="brand" href="#top" aria-label="LeshDevs Home">
+          <a
+            className="brand"
+            href="#top"
+            aria-label="LeshDevs Home"
+            onClick={(e) => {
+              e.preventDefault()
+              navigateToPage('home')
+            }}
+          >
             <BrandShield />
             <span>
               lesh<span className="brand-thin">devs</span>
@@ -221,10 +241,42 @@ export default function App() {
           </a>
 
           <nav className="nav-links" aria-label="Primary Navigation">
-            <a href="#languages">Curriculum</a>
-            <a href="#python-track">Python Pilot</a>
-            <a href="#arena">Challenge Arena</a>
-            <a href="#source-wall">The Source Wall</a>
+            <a
+              href="#lessons"
+              onClick={(e) => {
+                e.preventDefault()
+                navigateToPage('lessons')
+              }}
+            >
+              Lessons
+            </a>
+            <a
+              href="#languages"
+              onClick={(e) => {
+                e.preventDefault()
+                navigateToPage('home', '#languages')
+              }}
+            >
+              Curriculum
+            </a>
+            <a
+              href="#arena"
+              onClick={(e) => {
+                e.preventDefault()
+                navigateToPage('home', '#arena')
+              }}
+            >
+              Challenge Arena
+            </a>
+            <a
+              href="#source-wall"
+              onClick={(e) => {
+                e.preventDefault()
+                navigateToPage('home', '#source-wall')
+              }}
+            >
+              The Source Wall
+            </a>
             <a
               href="#code-editor"
               onClick={(e) => {
@@ -249,281 +301,329 @@ export default function App() {
               <span>{theme === 'dark' ? '☀' : '☾'}</span>
               <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
             </button>
-            <a className="nav-cta" href="#python-track">
-              Start Learning
-            </a>
+            <button
+              type="button"
+              className="nav-cta"
+              onClick={() => navigateToPage('lessons')}
+            >
+              Open Lessons
+            </button>
           </div>
         </div>
       </header>
 
-      <main id="top">
-        <section className="hero-section">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <div className="hero-badge">
-                <span className="pulse-dot" />
-                <span>FOUNDATIONS FIRST · 6 CORE LANGUAGES</span>
-              </div>
-              <h1>
-                Master the core of software engineering<span className="dot">.</span>
-              </h1>
-              <p className="hero-subtitle">
-                LeshDevs takes students from their first line of syntax to confident problem-solving across
-                Python, Java, HTML, CSS, JavaScript, and C.
-              </p>
-              <div className="hero-cta-row">
-                <a className="btn btn-primary" href="#python-track">
-                  Start Python Pilot <span>→</span>
-                </a>
-                <a className="btn btn-outline" href="#arena">
-                  Try Live Challenge
-                </a>
-              </div>
-
-              <div className="hero-metrics">
-                <div>
-                  <strong>6</strong>
-                  <span>Core Languages</span>
-                </div>
-                <div>
-                  <strong>{completedPythonLevels.length}/3</strong>
-                  <span>Python Levels Done</span>
-                </div>
-                <div>
-                  <strong>Rank {rank.name}</strong>
-                  <span>{points} XP Earned</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="hero-code-card" aria-label="Interactive code preview">
-              <div className="code-header">
-                <div className="code-dots">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="code-filename">foundation_core.py</span>
-                <span className="code-lang-tag">{currentLanguage.name}</span>
-              </div>
-              <pre className="code-body">
-                <code>
-                  <span className="ln">01</span> <span className="kw">def</span>{' '}
-                  <span className="fn">build_foundation</span>(student):
-                  {'\n'}
-                  <span className="ln">02</span>     stack = [<span className="str">&quot;Python&quot;</span>,{' '}
-                  <span className="str">&quot;Java&quot;</span>, <span className="str">&quot;JS&quot;</span>,{' '}
-                  <span className="str">&quot;C&quot;</span>]
-                  {'\n'}
-                  <span className="ln">03</span>     <span className="kw">for</span> lang{' '}
-                  <span className="kw">in</span> stack:
-                  {'\n'}
-                  <span className="ln">04</span>         student.master(lang)
-                  {'\n'}
-                  <span className="ln">05</span>     <span className="kw">return</span>{' '}
-                  <span className="str">&quot;Ready to ship.&quot;</span>
-                </code>
-              </pre>
-              <div className="code-footer">
-                <span>STATUS: COMPILING FUNDAMENTALS</span>
-                <span>NEXT RANK: {nextRank ? `${nextRank.min - points} PTS` : 'MAX'}</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="rank-banner">
-          <div className="container rank-banner-inner">
-            <div className="rank-info">
-              <span className="mono-label">OPERATIVE PROGRESSION</span>
-              <strong>
-                Rank {rank.name} · {points} / {nextRank ? nextRank.min : points} Points
-              </strong>
-            </div>
-            <div className="rank-bar-wrap">
-              <div className="rank-bar">
-                <span style={{ width: `${progressToNext}%` }} />
-              </div>
-              <div className="rank-tiers">
-                {ranks.map((r) => (
-                  <span key={r.name} className={points >= r.min ? 'tier active' : 'tier'}>
-                    {r.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section" id="languages">
-          <div className="container">
-            <div className="section-head">
-              <div>
-                <span className="section-kicker">CURRICULUM TRACKS</span>
-                <h2>Six foundational languages. Zero fluff.</h2>
-              </div>
-              <button
-                type="button"
-                className="btn btn-outline"
-                onClick={() => startChallenge(currentLanguage.name)}
-              >
-                Practice {currentLanguage.name} →
-              </button>
-            </div>
-
-            <div className="lang-grid">
-              {languages.map((lang) => (
-                <button
-                  type="button"
-                  key={lang.name}
-                  className={`lang-card ${activeLanguage === lang.name ? 'selected' : ''}`}
-                  onClick={() => handleSelectLanguage(lang.name)}
-                  aria-pressed={activeLanguage === lang.name}
-                >
-                  <div className="lang-card-top">
-                    <LanguageLogoSlot language={lang} />
-                    <span className="lang-tag">{lang.tag}</span>
-                  </div>
-                  <h3>{lang.name}</h3>
-                  <p className="lang-topic">Up next: {lang.topic}</p>
-                  <div className="lang-progress">
-                    <span style={{ width: `${lang.progress}%` }} />
-                  </div>
-                  <div className="lang-meta">
-                    <span>{lang.progress}% complete</span>
-                    <span>{lang.lessons} lessons</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <PythonTrack
+      {page === 'lessons' ? (
+        <LessonsPage
+          activeLanguage={activeLanguage}
+          onSelectLanguage={setActiveLanguage}
+          onBackHome={() => navigateToPage('home')}
           onOpenEditor={handleOpenEditorFromLesson}
           onCompleteLevel={handleCompletePythonLevel}
+          completedPythonLevels={completedPythonLevels}
         />
-
-        <section className="section arena-band" id="arena">
-          <div className="container arena-grid">
-            <div className="arena-copy">
-              <span className="section-kicker">INTERACTIVE SANDBOX</span>
-              <h2>Prove what you know in the Challenge Arena.</h2>
-              <p>
-                Test your instincts with rapid-fire foundation checks across all six languages. Every
-                correct answer adds +25 points to your rank score.
-              </p>
-              <div className="arena-pills">
-                <span>⚡ +25 PTS PER SOLVE</span>
-                <span>◷ INSTANT FEEDBACK</span>
-              </div>
-            </div>
-
-            <div className="challenge-box">
-              <div className="challenge-head">
-                <span className="challenge-badge">LIVE CHECK · {challenge.language.toUpperCase()}</span>
-                <span className="challenge-step">
-                  Q{challengeIndex + 1} / {challenges.length}
-                </span>
-              </div>
-              <h3>{challenge.prompt}</h3>
-
-              <div className="options-grid">
-                {challenge.options.map((option, idx) => (
-                  <button
-                    type="button"
-                    key={option}
-                    className={`option-btn ${selectedAnswer === option ? 'is-selected' : ''} ${
-                      answered && option === challenge.answer ? 'is-correct' : ''
-                    } ${
-                      answered && selectedAnswer === option && option !== challenge.answer ? 'is-wrong' : ''
-                    }`}
-                    onClick={() => !answered && setSelectedAnswer(option)}
-                    disabled={answered}
-                  >
-                    <span className="opt-key">{String.fromCharCode(65 + idx)}</span>
-                    <span className="opt-val">{option}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="challenge-actions">
-                <span className="challenge-notice" aria-live="polite">
-                  {notice || 'Select an option to verify your answer'}
-                </span>
-                {answered ? (
-                  <button type="button" className="btn btn-primary" onClick={nextChallenge}>
-                    Next Question →
-                  </button>
-                ) : (
+      ) : (
+        <main id="top">
+          <section className="hero-section">
+            <div className="container hero-grid">
+              <div className="hero-copy">
+                <div className="hero-badge">
+                  <span className="pulse-dot" />
+                  <span>FOUNDATIONS FIRST · 6 CORE LANGUAGES</span>
+                </div>
+                <h1>
+                  Master the core of software engineering<span className="dot">.</span>
+                </h1>
+                <p className="hero-subtitle">
+                  LeshDevs takes students from their first line of syntax to confident problem-solving across
+                  Python, Java, HTML, CSS, JavaScript, and C.
+                </p>
+                <div className="hero-cta-row">
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={submitAnswer}
-                    disabled={!selectedAnswer}
+                    onClick={() => navigateToPage('lessons')}
                   >
-                    Submit Answer →
+                    Start Python Lessons <span>→</span>
                   </button>
-                )}
+                  <a className="btn btn-outline" href="#arena">
+                    Try Live Challenge
+                  </a>
+                </div>
+
+                <div className="hero-metrics">
+                  <div>
+                    <strong>6</strong>
+                    <span>Core Languages</span>
+                  </div>
+                  <div>
+                    <strong>{completedPythonLevels.length}/3</strong>
+                    <span>Python Levels Done</span>
+                  </div>
+                  <div>
+                    <strong>Rank {rank.name}</strong>
+                    <span>{points} XP Earned</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="hero-code-card" aria-label="Interactive code preview">
+                <div className="code-header">
+                  <div className="code-dots">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <span className="code-filename">foundation_core.py</span>
+                  <span className="code-lang-tag">{currentLanguage.name}</span>
+                </div>
+                <pre className="code-body">
+                  <code>
+                    <span className="ln">01</span> <span className="kw">def</span>{' '}
+                    <span className="fn">build_foundation</span>(student):
+                    {'\n'}
+                    <span className="ln">02</span>     stack = [<span className="str">&quot;Python&quot;</span>,{' '}
+                    <span className="str">&quot;Java&quot;</span>, <span className="str">&quot;JS&quot;</span>,{' '}
+                    <span className="str">&quot;C&quot;</span>]
+                    {'\n'}
+                    <span className="ln">03</span>     <span className="kw">for</span> lang{' '}
+                    <span className="kw">in</span> stack:
+                    {'\n'}
+                    <span className="ln">04</span>         student.master(lang)
+                    {'\n'}
+                    <span className="ln">05</span>     <span className="kw">return</span>{' '}
+                    <span className="str">&quot;Ready to ship.&quot;</span>
+                  </code>
+                </pre>
+                <div className="code-footer">
+                  <span>STATUS: COMPILING FUNDAMENTALS</span>
+                  <span>NEXT RANK: {nextRank ? `${nextRank.min - points} PTS` : 'MAX'}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="section source-wall-section" id="source-wall">
-          <div className="container">
-            <div className="section-head light-head">
-              <div>
-                <span className="section-kicker">CURATED EXTERNAL ARCHIVES</span>
-                <h2>The Source Wall</h2>
-                <p className="source-sub">
-                  Hand-picked university lectures, video tracks, and interactive labs beyond the core
-                  syllabus.
-                </p>
+          <section className="rank-banner">
+            <div className="container rank-banner-inner">
+              <div className="rank-info">
+                <span className="mono-label">OPERATIVE PROGRESSION</span>
+                <strong>
+                  Rank {rank.name} · {points} / {nextRank ? nextRank.min : points} Points
+                </strong>
               </div>
-              <span className="mono-label">VERIFIED RELAYS ↗</span>
+              <div className="rank-bar-wrap">
+                <div className="rank-bar">
+                  <span style={{ width: `${progressToNext}%` }} />
+                </div>
+                <div className="rank-tiers">
+                  {ranks.map((r) => (
+                    <span key={r.name} className={points >= r.min ? 'tier active' : 'tier'}>
+                      {r.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div className="source-grid">
-              {resources.map((res) => (
-                <a
-                  key={res.name}
-                  href={res.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="source-card"
+          <section className="section" id="languages">
+            <div className="container">
+              <div className="section-head">
+                <div>
+                  <span className="section-kicker">CURRICULUM TRACKS</span>
+                  <h2>Six foundational languages. Zero fluff.</h2>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => startChallenge(currentLanguage.name)}
                 >
-                  <div className="source-card-top">
-                    <span className="source-mark">{res.mark}</span>
-                    <span className="source-type">{res.type}</span>
-                  </div>
-                  <h3>{res.name}</h3>
-                  <p>{res.description}</p>
-                  <div className="source-card-foot">
-                    <span>{res.meta}</span>
-                    <span>Visit ↗</span>
-                  </div>
-                </a>
-              ))}
+                  Practice {currentLanguage.name} →
+                </button>
+              </div>
+
+              <div className="lang-grid">
+                {languages.map((lang) => (
+                  <button
+                    type="button"
+                    key={lang.name}
+                    className={`lang-card ${activeLanguage === lang.name ? 'selected' : ''}`}
+                    onClick={() => handleSelectLanguage(lang.name)}
+                    aria-pressed={activeLanguage === lang.name}
+                  >
+                    <div className="lang-card-top">
+                      <LanguageLogoSlot language={lang} />
+                      <span className="lang-tag">{lang.tag}</span>
+                    </div>
+                    <h3>{lang.name}</h3>
+                    <p className="lang-topic">Up next: {lang.topic}</p>
+                    <div className="lang-progress">
+                      <span style={{ width: `${lang.progress}%` }} />
+                    </div>
+                    <div className="lang-meta">
+                      <span>{lang.progress}% complete</span>
+                      <span>{lang.lessons} lessons</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+
+          <section className="section arena-band" id="arena">
+            <div className="container arena-grid">
+              <div className="arena-copy">
+                <span className="section-kicker">INTERACTIVE SANDBOX</span>
+                <h2>Prove what you know in the Challenge Arena.</h2>
+                <p>
+                  Test your instincts with rapid-fire foundation checks across all six languages. Every
+                  correct answer adds +25 points to your rank score.
+                </p>
+                <div className="arena-pills">
+                  <span>⚡ +25 PTS PER SOLVE</span>
+                  <span>◷ INSTANT FEEDBACK</span>
+                </div>
+              </div>
+
+              <div className="challenge-box">
+                <div className="challenge-head">
+                  <span className="challenge-badge">LIVE CHECK · {challenge.language.toUpperCase()}</span>
+                  <span className="challenge-step">
+                    Q{challengeIndex + 1} / {challenges.length}
+                  </span>
+                </div>
+                <h3>{challenge.prompt}</h3>
+
+                <div className="options-grid">
+                  {challenge.options.map((option, idx) => (
+                    <button
+                      type="button"
+                      key={option}
+                      className={`option-btn ${selectedAnswer === option ? 'is-selected' : ''} ${
+                        answered && option === challenge.answer ? 'is-correct' : ''
+                      } ${
+                        answered && selectedAnswer === option && option !== challenge.answer ? 'is-wrong' : ''
+                      }`}
+                      onClick={() => !answered && setSelectedAnswer(option)}
+                      disabled={answered}
+                    >
+                      <span className="opt-key">{String.fromCharCode(65 + idx)}</span>
+                      <span className="opt-val">{option}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="challenge-actions">
+                  <span className="challenge-notice" aria-live="polite">
+                    {notice || 'Select an option to verify your answer'}
+                  </span>
+                  {answered ? (
+                    <button type="button" className="btn btn-primary" onClick={nextChallenge}>
+                      Next Question →
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={submitAnswer}
+                      disabled={!selectedAnswer}
+                    >
+                      Submit Answer →
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section source-wall-section" id="source-wall">
+            <div className="container">
+              <div className="section-head light-head">
+                <div>
+                  <span className="section-kicker">CURATED EXTERNAL ARCHIVES</span>
+                  <h2>The Source Wall</h2>
+                  <p className="source-sub">
+                    Hand-picked university lectures, video tracks, and interactive labs beyond the core
+                    syllabus.
+                  </p>
+                </div>
+                <span className="mono-label">VERIFIED RELAYS ↗</span>
+              </div>
+
+              <div className="source-grid">
+                {resources.map((res) => (
+                  <a
+                    key={res.name}
+                    href={res.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="source-card"
+                  >
+                    <div className="source-card-top">
+                      <span className="source-mark">{res.mark}</span>
+                      <span className="source-type">{res.type}</span>
+                    </div>
+                    <h3>{res.name}</h3>
+                    <p>{res.description}</p>
+                    <div className="source-card-foot">
+                      <span>{res.meta}</span>
+                      <span>Visit ↗</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      )}
 
       <footer className="site-footer">
         <div className="container footer-inner">
-          <a className="brand" href="#top">
+          <a
+            className="brand"
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault()
+              navigateToPage('home')
+            }}
+          >
             <BrandShield />
             <span>
               lesh<span className="brand-thin">devs</span>
             </span>
           </a>
           <p>Foundations of programming — Python, Java, HTML, CSS, JavaScript &amp; C.</p>
-          <a className="back-top" href="#top">
+          <button
+            type="button"
+            className="back-top"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             Back to top ↑
-          </a>
+          </button>
         </div>
       </footer>
+
+      <nav className="mobile-bottom-nav" aria-label="Mobile Quick Navigation">
+        <button
+          type="button"
+          className={page === 'home' ? 'active' : ''}
+          onClick={() => navigateToPage('home')}
+        >
+          Home
+        </button>
+        <button
+          type="button"
+          className={page === 'lessons' ? 'active' : ''}
+          onClick={() => navigateToPage('lessons')}
+        >
+          Lessons
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsEditorOpen(true)}
+        >
+          Editor
+        </button>
+      </nav>
 
       <CodeEditor
         initialLanguage={activeLanguage}
