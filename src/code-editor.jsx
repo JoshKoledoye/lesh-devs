@@ -1,69 +1,153 @@
 import { useEffect, useState } from 'react'
 
 const STARTER_TEMPLATES = {
-  Python: `# LeshDevs Python Playground\ncreator = "Guido van Rossum"\nmain_use = "AI and Machine Learning"\n\nprint("Created by:", creator)\nprint("Popular today for:", main_use)`,
-  JavaScript: `// LeshDevs JavaScript Playground\nconst track = "Full-Stack Logic";\nconst lessons = 14;\n\nconsole.log("Track:", track, "Lessons:", lessons);`,
-  HTML: `<!-- LeshDevs HTML Playground -->\n<main class="card">\n  <h1>LeshDevs Foundations</h1>\n  <p>Clear B1 programming lessons.</p>\n</main>`,
-  CSS: `/* LeshDevs CSS Playground */\n.card {\n  display: grid;\n  gap: 12px;\n  padding: 20px;\n  border-radius: 14px;\n}`,
-  Java: `// LeshDevs Java Playground\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("LeshDevs Java Ready");\n  }\n}`,
-  C: `// LeshDevs C Playground\n#include <stdio.h>\n\nint main(void) {\n  printf("LeshDevs C Ready\\n");\n  return 0;\n}`,
+  HTML: `<!-- LeshDevs HTML Visual Stage -->
+<div class="preview-card">
+  <span class="pill">HTML5 · VISUAL DISPLAY</span>
+  <h2>Semantic Structure</h2>
+  <p>Clear, simple English lessons show how elements stack and group content.</p>
+  <button class="demo-btn">Interactive Element</button>
+</div>`,
+  CSS: `/* LeshDevs CSS Visual Stage */
+.preview-card {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 14px;
+  padding: 20px;
+  border-left: 5px solid #38bdf8;
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+}
+.pill {
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #2554d4;
+  font-weight: 700;
+}
+.demo-btn {
+  width: fit-content;
+  background: #32324d;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+}`,
+  Python: `# LeshDevs Python Visual Breakdown
+language = "Python"
+creator = "Guido van Rossum"
+focus = "AI, Data & Clear Syntax"`,
+  JavaScript: `// LeshDevs JavaScript Visual Breakdown
+const track = "Full-Stack Logic";
+const focus = "Functions, Scope & UI Behavior";`,
+  Java: `// LeshDevs Java Visual Breakdown
+class Foundation {
+  String focus = "Classes, Types & Structure";
+}`,
+  C: `/* LeshDevs C Visual Breakdown */
+/* Direct memory layout & predictable execution */`,
 }
 
-const LANGUAGES = ['Python', 'JavaScript', 'HTML', 'CSS', 'Java', 'C']
+const DEFAULT_HTML_WRAPPER = `<style>
+  * { box-sizing: border-box; font-family: Inter, system-ui, sans-serif; }
+  body { margin: 0; padding: 18px; background: #141414; color: #f3f4f6; }
+  .preview-card {
+    background: #252526;
+    color: #f3f4f6;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-left: 5px solid #38bdf8;
+    border-radius: 14px;
+    padding: 18px;
+    display: grid;
+    gap: 10px;
+  }
+  .pill {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+  h2 { margin: 0; font-size: 1.2rem; }
+  p { margin: 0; color: #d1d5db; font-size: 0.92rem; line-height: 1.5; }
+  .demo-btn {
+    width: fit-content;
+    background: #38bdf8;
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+</style>`
 
-function simulateExecution(language, sourceCode) {
-  const trimmed = sourceCode.trim()
-  if (!trimmed) {
-    return 'Empty buffer — write some code first, then hit Run Code.'
+const LANGUAGES = ['HTML', 'CSS', 'Python', 'JavaScript', 'Java', 'C']
+
+function buildVisualHtml(language, code) {
+  if (language === 'HTML') {
+    return `${DEFAULT_HTML_WRAPPER}\n${code}`
   }
 
-  if (language === 'Python') {
-    const lines = []
-    const printMatches = [...trimmed.matchAll(/print\((.+)\)/g)]
-    for (const match of printMatches) {
-      const inner = match[1].trim()
-      const clean = inner
-        .split(',')
-        .map((part) => part.trim().replace(/^["']|["']$/g, ''))
-        .join(' ')
-      lines.push(clean)
-    }
-    if (lines.length > 0) {
-      return lines.join('\n')
-    }
-    return `Ran Python code (${trimmed.split('\n').length} lines). Use print(...) to see values.`
+  if (language === 'CSS') {
+    return `${DEFAULT_HTML_WRAPPER}
+<style>${code}</style>
+<div class="preview-card">
+  <span class="pill">CSS3 · LIVE STYLE DISPLAY</span>
+  <h2>Styled Box Preview</h2>
+  <p>Your CSS rules apply directly to this visual card.</p>
+  <button class="demo-btn">Sample Control</button>
+</div>`
   }
 
-  if (language === 'JavaScript') {
-    const logMatches = [...trimmed.matchAll(/console\.log\((.+)\)/g)]
-    if (logMatches.length > 0) {
-      return logMatches
-        .map((m) => m[1].trim().replace(/^[`"'"]|[`"']$/g, ''))
-        .join('\n')
-    }
-    return `Ran JavaScript code (${trimmed.split('\n').length} lines).`
-  }
+  const lines = code
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
 
-  return `[${language}] Checked ${trimmed.split('\n').length} lines of code.`
+  const cards = lines
+    .map(
+      (line, idx) =>
+        `<div class="preview-card"><span class="pill">LINE ${idx + 1}</span><p>${line
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')}</p></div>`
+    )
+    .join('')
+
+  return `${DEFAULT_HTML_WRAPPER}
+<div style="display:grid;gap:10px;">
+  <span class="pill">${language.toUpperCase()} · STRUCTURE DISPLAY</span>
+  ${cards || '<div class="preview-card"><p>Write code to inspect structure.</p></div>'}
+</div>`
 }
 
 export default function CodeEditor({
   isOpen,
   onClose,
-  initialLanguage = 'Python',
+  initialLanguage = 'HTML',
   initialCode = '',
 }) {
-  const [language, setLanguage] = useState(initialLanguage || 'Python')
-  const [code, setCode] = useState(
-    initialCode || STARTER_TEMPLATES[initialLanguage || 'Python'] || STARTER_TEMPLATES.Python
+  const [language, setLanguage] = useState(
+    LANGUAGES.includes(initialLanguage) ? initialLanguage : 'HTML'
   )
-  const [output, setOutput] = useState('Click "Run Code" to see output here.')
+  const [code, setCode] = useState(
+    initialCode || STARTER_TEMPLATES[initialLanguage] || STARTER_TEMPLATES.HTML
+  )
+  const [previewDoc, setPreviewDoc] = useState(() =>
+    buildVisualHtml(
+      LANGUAGES.includes(initialLanguage) ? initialLanguage : 'HTML',
+      initialCode || STARTER_TEMPLATES[initialLanguage] || STARTER_TEMPLATES.HTML
+    )
+  )
 
   useEffect(() => {
-    const nextLang = LANGUAGES.includes(initialLanguage) ? initialLanguage : 'Python'
+    const nextLang = LANGUAGES.includes(initialLanguage) ? initialLanguage : 'HTML'
+    const nextCode = initialCode || STARTER_TEMPLATES[nextLang] || STARTER_TEMPLATES.HTML
     setLanguage(nextLang)
-    setCode(initialCode || STARTER_TEMPLATES[nextLang] || STARTER_TEMPLATES.Python)
-    setOutput('Click "Run Code" to see output here.')
+    setCode(nextCode)
+    setPreviewDoc(buildVisualHtml(nextLang, nextCode))
   }, [initialLanguage, initialCode, isOpen])
 
   useEffect(() => {
@@ -78,18 +162,20 @@ export default function CodeEditor({
   if (!isOpen) return null
 
   function handleLanguageSwitch(nextLang) {
+    const nextCode = STARTER_TEMPLATES[nextLang] || ''
     setLanguage(nextLang)
-    setCode(STARTER_TEMPLATES[nextLang] || '')
-    setOutput('Switched language template. Click "Run Code" to test.')
+    setCode(nextCode)
+    setPreviewDoc(buildVisualHtml(nextLang, nextCode))
   }
 
   function handleReset() {
-    setCode(initialCode || STARTER_TEMPLATES[language] || '')
-    setOutput('Reset to starter snippet.')
+    const resetCode = initialCode || STARTER_TEMPLATES[language] || ''
+    setCode(resetCode)
+    setPreviewDoc(buildVisualHtml(language, resetCode))
   }
 
-  function handleRun() {
-    setOutput(simulateExecution(language, code))
+  function handleRenderVisual() {
+    setPreviewDoc(buildVisualHtml(language, code))
   }
 
   return (
@@ -109,7 +195,7 @@ export default function CodeEditor({
             <span className="dot-yellow" />
             <span className="dot-green" />
           </div>
-          <span className="editor-modal-title">leshdevs_playground</span>
+          <span className="editor-modal-title">leshdevs_visual_stage</span>
 
           <div className="editor-lang-pills" role="tablist" aria-label="Editor Languages">
             {LANGUAGES.map((lang) => (
@@ -148,17 +234,22 @@ export default function CodeEditor({
 
         <div className="editor-console">
           <div className="editor-console-head">
-            <span>TERMINAL OUTPUT · {language.toUpperCase()}</span>
+            <span>VISUAL DISPLAY · {language.toUpperCase()}</span>
             <div className="pane-actions">
               <button type="button" className="btn btn-outline duo-3d" onClick={handleReset}>
                 Reset
               </button>
-              <button type="button" className="btn btn-primary duo-3d" onClick={handleRun}>
-                Run Code ▶
+              <button type="button" className="btn btn-primary duo-3d" onClick={handleRenderVisual}>
+                Update Visual ✦
               </button>
             </div>
           </div>
-          <pre className="editor-console-body">{output}</pre>
+          <iframe
+            className="editor-visual-frame"
+            title={`${language} Visual Preview`}
+            srcDoc={previewDoc}
+            sandbox="allow-scripts"
+          />
         </div>
       </div>
     </div>
