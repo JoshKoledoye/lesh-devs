@@ -1,114 +1,73 @@
 import { useEffect, useState } from 'react'
 
-const starterCode = {
-  Python: `def greet(name):\n    print("Hello,", name)\n\ngreet("LeshDevs")\n`,
-  Java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello from Java");\n    }\n}\n`,
-  HTML: `<div class="demo-box">\n  <h3>LeshDevs Lab</h3>\n  <p>Edit markup and hit Run.</p>\n</div>\n`,
-  CSS: `.demo-box {\n  padding: 20px;\n  background: #020C33;\n  color: #ffffff;\n  font-family: system-ui, sans-serif;\n}\n`,
-  JavaScript: `const tracks = ["Python", "Java", "HTML", "CSS", "JavaScript", "C"];\nconsole.log("Tracks count:", tracks.length);\n`,
-  C: `#include <stdio.h>\n\nint main(void) {\n    printf("Hello from C\\n");\n    return 0;\n}\n`,
+const STARTER_TEMPLATES = {
+  Python: `# LeshDevs Python Playground\ncreator = "Guido van Rossum"\nmain_use = "AI and Machine Learning"\n\nprint("Created by:", creator)\nprint("Popular today for:", main_use)`,
+  JavaScript: `// LeshDevs JavaScript Playground\nconst track = "Full-Stack Logic";\nconst lessons = 14;\n\nconsole.log("Track:", track, "Lessons:", lessons);`,
+  HTML: `<!-- LeshDevs HTML Playground -->\n<main class="card">\n  <h1>LeshDevs Foundations</h1>\n  <p>Clear, simple English programming lessons.</p>\n</main>`,
+  CSS: `/* LeshDevs CSS Playground */\n.card {\n  display: grid;\n  gap: 12px;\n  padding: 20px;\n  border-radius: 14px;\n}`,
+  Java: `// LeshDevs Java Playground\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("LeshDevs Java Ready");\n  }\n}`,
+  C: `// LeshDevs C Playground\n#include <stdio.h>\n\nint main(void) {\n  printf("LeshDevs C Ready\\n");\n  return 0;\n}`,
 }
 
-const langList = Object.keys(starterCode)
+const LANGUAGES = ['Python', 'JavaScript', 'HTML', 'CSS', 'Java', 'C']
 
-function executeSnippet(language, code, htmlCode, cssCode) {
-  if (language === 'HTML') {
-    return {
-      type: 'preview',
-      srcDoc: `<!doctype html><html><head><style>body{margin:16px;font-family:system-ui,sans-serif;}${cssCode}</style></head><body>${code}</body></html>`,
-      output: ['Rendered HTML preview.'],
-    }
+function simulateExecution(language, sourceCode) {
+  const trimmed = sourceCode.trim()
+  if (!trimmed) {
+    return 'Empty buffer — write some code first, then hit Run Code.'
   }
 
-  if (language === 'CSS') {
-    return {
-      type: 'preview',
-      srcDoc: `<!doctype html><html><head><style>body{margin:16px;font-family:system-ui,sans-serif;}${code}</style></head><body>${htmlCode}</body></html>`,
-      output: ['Applied CSS rules to sample HTML.'],
+  if (language === 'Python') {
+    const lines = []
+    const printMatches = [...trimmed.matchAll(/print\((.+)\)/g)]
+    for (const match of printMatches) {
+      const inner = match[1].trim()
+      const clean = inner
+        .split(',')
+        .map((part) => part.trim().replace(/^["']|["']$/g, ''))
+        .join(' ')
+      lines.push(clean)
     }
+    if (lines.length > 0) {
+      return lines.join('\n')
+    }
+    return `Ran Python code (${trimmed.split('\n').length} lines). Use print(...) to see values.`
   }
 
   if (language === 'JavaScript') {
-    const logs = []
-    const sandboxConsole = {
-      log: (...args) => logs.push(args.map((item) => String(item)).join(' ')),
-      warn: (...args) => logs.push(`WARN: ${args.join(' ')}`),
-      error: (...args) => logs.push(`ERROR: ${args.join(' ')}`),
+    const logMatches = [...trimmed.matchAll(/console\.log\((.+)\)/g)]
+    if (logMatches.length > 0) {
+      return logMatches
+        .map((m) => m[1].trim().replace(/^[`"'"]|[`"']$/g, ''))
+        .join('\n')
     }
-
-    try {
-      // eslint-disable-next-line no-new-func
-      const runner = new Function('console', code)
-      const returned = runner(sandboxConsole)
-      if (returned !== undefined) {
-        logs.push(`=> ${String(returned)}`)
-      }
-      return {
-        type: 'console',
-        srcDoc: '',
-        output: logs.length ? logs : ['Executed with no console output.'],
-      }
-    } catch (err) {
-      return {
-        type: 'console',
-        srcDoc: '',
-        output: [`Error: ${err.message}`],
-      }
-    }
+    return `Ran JavaScript code (${trimmed.split('\n').length} lines).`
   }
 
-  const lines = []
-  for (const rawLine of code.split('\n')) {
-    const line = rawLine.trim()
-    const pyMatch = line.match(/^print\((.*)\)$/)
-    const javaMatch = line.match(/^System\.out\.println\((.*)\);?$/)
-    const cMatch = line.match(/^printf\((.*)\);?$/)
-
-    const matched = pyMatch || javaMatch || cMatch
-    if (matched) {
-      const cleaned = matched[1]
-        .replace(/\\n/g, '')
-        .replace(/^f?["']|["']$/g, '')
-        .trim()
-      lines.push(cleaned || ' ')
-    }
-  }
-
-  if (!lines.length) {
-    lines.push(`${language} snippet saved in editor. Full compiler/backend runner comes later.`)
-  }
-
-  return { type: 'console', srcDoc: '', output: lines }
+  return `[${language}] Checked ${trimmed.split('\n').length} lines of code.`
 }
 
 export default function CodeEditor({
-  initialLanguage = 'Python',
-  isOpen = true,
+  isOpen,
   onClose,
+  initialLanguage = 'Python',
+  initialCode = '',
 }) {
-  const [selectedLang, setSelectedLang] = useState(
-    starterCode[initialLanguage] ? initialLanguage : 'Python'
+  const [language, setLanguage] = useState(initialLanguage || 'Python')
+  const [code, setCode] = useState(
+    initialCode || STARTER_TEMPLATES[initialLanguage || 'Python'] || STARTER_TEMPLATES.Python
   )
-  const [codes, setCodes] = useState(() => ({ ...starterCode }))
-  const [result, setResult] = useState(() =>
-    executeSnippet(
-      starterCode[initialLanguage] ? initialLanguage : 'Python',
-      starterCode[starterCode[initialLanguage] ? initialLanguage : 'Python'],
-      starterCode.HTML,
-      starterCode.CSS
-    )
-  )
+  const [output, setOutput] = useState('Click "Run Code" to see output here.')
+
+  useEffect(() => {
+    const nextLang = LANGUAGES.includes(initialLanguage) ? initialLanguage : 'Python'
+    setLanguage(nextLang)
+    setCode(initialCode || STARTER_TEMPLATES[nextLang] || STARTER_TEMPLATES.Python)
+    setOutput('Click "Run Code" to see output here.')
+  }, [initialLanguage, initialCode, isOpen])
 
   useEffect(() => {
     if (!isOpen) return
-    const nextLang = starterCode[initialLanguage] ? initialLanguage : 'Python'
-    setSelectedLang(nextLang)
-    setResult(executeSnippet(nextLang, codes[nextLang], codes.HTML, codes.CSS))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, initialLanguage])
-
-  useEffect(() => {
-    if (!isOpen || !onClose) return
     function handleKeyDown(e) {
       if (e.key === 'Escape') onClose()
     }
@@ -118,44 +77,48 @@ export default function CodeEditor({
 
   if (!isOpen) return null
 
-  function handleLanguageSwitch(lang) {
-    setSelectedLang(lang)
-    setResult(executeSnippet(lang, codes[lang], codes.HTML, codes.CSS))
-  }
-
-  function handleRun() {
-    setResult(executeSnippet(selectedLang, codes[selectedLang], codes.HTML, codes.CSS))
+  function handleLanguageSwitch(nextLang) {
+    setLanguage(nextLang)
+    setCode(STARTER_TEMPLATES[nextLang] || '')
+    setOutput('Switched language template. Click "Run Code" to test.')
   }
 
   function handleReset() {
-    const resetVal = starterCode[selectedLang]
-    setCodes((prev) => ({ ...prev, [selectedLang]: resetVal }))
-    setResult(executeSnippet(selectedLang, resetVal, codes.HTML, codes.CSS))
+    setCode(initialCode || STARTER_TEMPLATES[language] || '')
+    setOutput('Reset to starter snippet.')
   }
 
-  const editorBody = (
-    <div
-      className={onClose ? 'editor-modal-dialog' : 'container'}
-      role={onClose ? 'dialog' : undefined}
-      aria-modal={onClose ? 'true' : undefined}
-      aria-label="Code Editor"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="section-head">
-        <div>
-          <span className="section-kicker">CODE EDITOR MODAL</span>
-          <h2>Quick Scratchpad</h2>
-        </div>
+  function handleRun() {
+    setOutput(simulateExecution(language, code))
+  }
 
-        <div className="editor-modal-controls">
-          <div className="holomat-lang-tabs" role="tablist" aria-label="Editor Languages">
-            {langList.map((lang) => (
+  return (
+    <div
+      className="editor-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="LeshDevs Code Editor"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
+      <div className="editor-modal-card duo-card duo-pop">
+        <div className="editor-modal-top">
+          <div className="vscode-window-dots" aria-hidden="true">
+            <span className="dot-red" />
+            <span className="dot-yellow" />
+            <span className="dot-green" />
+          </div>
+          <span className="editor-modal-title">leshdevs_playground</span>
+
+          <div className="editor-lang-pills" role="tablist" aria-label="Editor Languages">
+            {LANGUAGES.map((lang) => (
               <button
                 type="button"
                 key={lang}
                 role="tab"
-                aria-selected={selectedLang === lang}
-                className={`holo-tab ${selectedLang === lang ? 'active' : ''}`}
+                aria-selected={language === lang}
+                className={`editor-lang-pill duo-3d ${language === lang ? 'active' : ''}`}
                 onClick={() => handleLanguageSwitch(lang)}
               >
                 {lang}
@@ -163,86 +126,41 @@ export default function CodeEditor({
             ))}
           </div>
 
-          {onClose && (
-            <button
-              type="button"
-              className="modal-close-btn"
-              onClick={onClose}
-              aria-label="Close code editor modal"
-            >
-              ✕ Close
-            </button>
-          )}
+          <button
+            type="button"
+            className="editor-close-btn duo-3d"
+            onClick={onClose}
+            aria-label="Close Code Editor"
+          >
+            ✕
+          </button>
         </div>
-      </div>
 
-      <div className="holomat-workspace">
-        <div className="editor-pane">
-          <div className="pane-bar">
-            <span>{selectedLang.toUpperCase()} BUFFER</span>
-            <div className="pane-actions">
-              <button type="button" className="mini-btn" onClick={handleReset}>
-                Reset
-              </button>
-              <button type="button" className="mini-btn run" onClick={handleRun}>
-                Run ▶
-              </button>
-            </div>
-          </div>
+        <div className="editor-workspace">
           <textarea
-            className="code-textarea"
-            value={codes[selectedLang]}
-            onChange={(e) =>
-              setCodes((prev) => ({ ...prev, [selectedLang]: e.target.value }))
-            }
+            className="editor-textarea"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
             spellCheck={false}
-            aria-label={`${selectedLang} scratchpad editor`}
+            aria-label={`${language} code editor input`}
           />
         </div>
 
-        <div className="output-pane">
-          <div className="pane-bar">
-            <span>{result.type === 'preview' ? 'PREVIEW' : 'OUTPUT'}</span>
-            <span>BASIC RUNNER</span>
-          </div>
-
-          {result.type === 'preview' ? (
-            <iframe
-              title="Scratchpad Live Preview"
-              className="holo-preview-frame"
-              srcDoc={result.srcDoc}
-              sandbox="allow-scripts"
-            />
-          ) : (
-            <div className="console-screen">
-              {result.output.map((line, i) => (
-                <div key={i} className="console-line">
-                  <span className="prompt-char">&gt;</span>
-                  <span>{line}</span>
-                </div>
-              ))}
+        <div className="editor-console">
+          <div className="editor-console-head">
+            <span>TERMINAL OUTPUT · {language.toUpperCase()}</span>
+            <div className="pane-actions">
+              <button type="button" className="btn btn-outline duo-3d" onClick={handleReset}>
+                Reset
+              </button>
+              <button type="button" className="btn btn-primary duo-3d" onClick={handleRun}>
+                Run Code ▶
+              </button>
             </div>
-          )}
+          </div>
+          <pre className="editor-console-body">{output}</pre>
         </div>
       </div>
-    </div>
-  )
-
-  if (!onClose) {
-    return (
-      <section className="section" id="code-editor">
-        {editorBody}
-      </section>
-    )
-  }
-
-  return (
-    <div
-      className="editor-modal-backdrop"
-      onClick={onClose}
-      role="presentation"
-    >
-      {editorBody}
     </div>
   )
 }
