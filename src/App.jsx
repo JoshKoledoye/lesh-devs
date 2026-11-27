@@ -10,21 +10,105 @@ import CodeEditor from './components/CodeEditor'
 import LessonsPage from './pages/LessonsPage'
 
 const languages = [
-  { name: 'Python', symbol: 'Py', logoSrc: pythonLogo, lessons: 12, progress: 68, topic: 'History, syntax & AI/ML', code: '01', tag: 'Scripting & AI' },
-  { name: 'Java', symbol: 'Jv', logoSrc: javaLogo, lessons: 10, progress: 34, topic: 'Classes & objects', code: '02', tag: 'Enterprise OOP' },
-  { name: 'HTML', symbol: '5', logoSrc: htmlLogo, lessons: 8, progress: 82, topic: 'Semantic structure', code: '03', tag: 'Web Architecture' },
-  { name: 'CSS', symbol: '3', logoSrc: cssLogo, lessons: 9, progress: 51, topic: 'Flexbox & Grid', code: '04', tag: 'Responsive UI' },
-  { name: 'JavaScript', symbol: 'JS', logoSrc: jsLogo, lessons: 14, progress: 23, topic: 'Functions & scope', code: '05', tag: 'Full-Stack Logic' },
-  { name: 'C', symbol: 'C', logoSrc: cLogo, lessons: 11, progress: 12, topic: 'Memory & pointers', code: '06', tag: 'Systems Core' },
+  {
+    name: 'Python',
+    symbol: 'Py',
+    logoSrc: pythonLogo,
+    lessons: 12,
+    statusLabel: 'Active B1 Pilot',
+    topic: 'History, syntax & AI/ML',
+    code: '01',
+    tag: 'Scripting & AI',
+  },
+  {
+    name: 'Java',
+    symbol: 'Jv',
+    logoSrc: javaLogo,
+    lessons: 10,
+    statusLabel: 'Track Planned',
+    topic: 'Classes & objects',
+    code: '02',
+    tag: 'Enterprise OOP',
+  },
+  {
+    name: 'HTML',
+    symbol: '5',
+    logoSrc: htmlLogo,
+    lessons: 8,
+    statusLabel: 'Track Planned',
+    topic: 'Semantic structure',
+    code: '03',
+    tag: 'Web Architecture',
+  },
+  {
+    name: 'CSS',
+    symbol: '3',
+    logoSrc: cssLogo,
+    lessons: 9,
+    statusLabel: 'Track Planned',
+    topic: 'Flexbox & Grid',
+    code: '04',
+    tag: 'Responsive UI',
+  },
+  {
+    name: 'JavaScript',
+    symbol: 'JS',
+    logoSrc: jsLogo,
+    lessons: 14,
+    statusLabel: 'Track Planned',
+    topic: 'Functions & scope',
+    code: '05',
+    tag: 'Full-Stack Logic',
+  },
+  {
+    name: 'C',
+    symbol: 'C',
+    logoSrc: cLogo,
+    lessons: 11,
+    statusLabel: 'Track Planned',
+    topic: 'Memory & pointers',
+    code: '06',
+    tag: 'Systems Core',
+  },
 ]
 
 const challenges = [
-  { prompt: 'In Python, which keyword starts a function definition?', options: ['func', 'def', 'function', 'make'], answer: 'def', language: 'Python' },
-  { prompt: 'Which HTML element is best for the main content of a page?', options: ['<section>', '<body>', '<main>', '<div>'], answer: '<main>', language: 'HTML' },
-  { prompt: 'Which JavaScript keyword declares a block-scoped variable that can be reassigned?', options: ['const', 'let', 'varies', 'static'], answer: 'let', language: 'JavaScript' },
-  { prompt: 'In CSS Flexbox, which property aligns items along the main axis?', options: ['align-items', 'place-items', 'justify-content', 'flex-wrap'], answer: 'justify-content', language: 'CSS' },
-  { prompt: 'In Java, which method is the usual program entry point?', options: ['start()', 'main()', 'run()', 'init()'], answer: 'main()', language: 'Java' },
-  { prompt: 'Which symbol ends most statements in C?', options: [':', '.', ';', ','], answer: ';', language: 'C' },
+  {
+    prompt: 'In Python, which keyword starts a function definition?',
+    options: ['func', 'def', 'function', 'make'],
+    answer: 'def',
+    language: 'Python',
+  },
+  {
+    prompt: 'Which HTML element is best for the main content of a page?',
+    options: ['<section>', '<body>', '<main>', '<div>'],
+    answer: '<main>',
+    language: 'HTML',
+  },
+  {
+    prompt: 'Which JavaScript keyword declares a block-scoped variable that can be reassigned?',
+    options: ['const', 'let', 'varies', 'static'],
+    answer: 'let',
+    language: 'JavaScript',
+  },
+  {
+    prompt: 'In CSS Flexbox, which property aligns items along the main axis?',
+    options: ['align-items', 'place-items', 'justify-content', 'flex-wrap'],
+    answer: 'justify-content',
+    language: 'CSS',
+  },
+  {
+    prompt: 'In Java, which method is the usual program entry point?',
+    options: ['start()', 'main()', 'run()', 'init()'],
+    answer: 'main()',
+    language: 'Java',
+  },
+  {
+    prompt: 'Which symbol ends most statements in C?',
+    options: [':', '.', ';', ','],
+    answer: ';',
+    language: 'C',
+  },
 ]
 
 const resources = [
@@ -53,19 +137,6 @@ const resources = [
     mark: 'fCC',
   },
 ]
-
-const ranks = [
-  { name: 'E', min: 0 },
-  { name: 'D', min: 100 },
-  { name: 'C', min: 250 },
-  { name: 'B', min: 500 },
-  { name: 'A', min: 900 },
-  { name: 'S', min: 1500 },
-]
-
-function getRank(points) {
-  return [...ranks].reverse().find((rank) => points >= rank.min) || ranks[0]
-}
 
 function BrandShield() {
   return (
@@ -116,15 +187,15 @@ function LanguageLogoSlot({ language }) {
 export default function App() {
   const [page, setPage] = useState('home') // 'home' | 'lessons'
   const [theme, setTheme] = useState(() => localStorage.getItem('leshdevs-theme') || 'light')
-  const [activeLanguage, setActiveLanguage] = useState(() => localStorage.getItem('leshdevs-lang') || 'Python')
-  const [points, setPoints] = useState(() => Number(localStorage.getItem('leshdevs-points')) || 420)
+  const [activeLanguage, setActiveLanguage] = useState(
+    () => localStorage.getItem('leshdevs-lang') || 'Python'
+  )
   const [challengeIndex, setChallengeIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [answered, setAnswered] = useState(false)
   const [notice, setNotice] = useState('')
   const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [editorSnippet, setEditorSnippet] = useState('')
-  const [completedPythonLevels, setCompletedPythonLevels] = useState([])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -135,13 +206,9 @@ export default function App() {
     localStorage.setItem('leshdevs-lang', activeLanguage)
   }, [activeLanguage])
 
-  const rank = getRank(points)
-  const nextRank = ranks.find((item) => item.min > points)
-  const progressToNext = nextRank
-    ? Math.min(100, ((points - rank.min) / (nextRank.min - rank.min)) * 100)
-    : 100
   const challenge = challenges[challengeIndex]
-  const currentLanguage = languages.find((language) => language.name === activeLanguage) || languages[0]
+  const currentLanguage =
+    languages.find((language) => language.name === activeLanguage) || languages[0]
 
   function navigateToPage(targetPage, selector = '') {
     setPage(targetPage)
@@ -154,14 +221,6 @@ export default function App() {
     })
   }
 
-  function awardPoints(amount) {
-    setPoints((prev) => {
-      const updated = prev + amount
-      localStorage.setItem('leshdevs-points', String(updated))
-      return updated
-    })
-  }
-
   function toggleDarkMode() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
@@ -170,10 +229,9 @@ export default function App() {
     if (!selectedAnswer || answered) return
     setAnswered(true)
     if (selectedAnswer === challenge.answer) {
-      awardPoints(25)
-      setNotice('Correct! +25 XP added to your profile.')
+      setNotice('Correct! Nice work on that check.')
     } else {
-      setNotice(`Not quite — the answer is ${challenge.answer}. Try the next one.`)
+      setNotice(`Not quite — the answer is ${challenge.answer}. Try the next question.`)
     }
   }
 
@@ -211,14 +269,6 @@ export default function App() {
     if (language) setActiveLanguage(language)
     if (typeof snippet === 'string') setEditorSnippet(snippet)
     setIsEditorOpen(true)
-  }
-
-  function handleCompletePythonLevel(levelId) {
-    setCompletedPythonLevels((prev) => {
-      if (prev.includes(levelId)) return prev
-      awardPoints(25)
-      return [...prev, levelId]
-    })
   }
 
   return (
@@ -289,9 +339,6 @@ export default function App() {
           </nav>
 
           <div className="nav-actions">
-            <span className="rank-pill" title="Your current rank and points">
-              RANK {rank.name} · {points} PTS
-            </span>
             <button
               type="button"
               className="theme-btn"
@@ -318,8 +365,6 @@ export default function App() {
           onSelectLanguage={setActiveLanguage}
           onBackHome={() => navigateToPage('home')}
           onOpenEditor={handleOpenEditorFromLesson}
-          onCompleteLevel={handleCompletePythonLevel}
-          completedPythonLevels={completedPythonLevels}
         />
       ) : (
         <main id="top">
@@ -334,8 +379,8 @@ export default function App() {
                   Master the core of software engineering<span className="dot">.</span>
                 </h1>
                 <p className="hero-subtitle">
-                  LeshDevs takes students from their first line of syntax to confident problem-solving across
-                  Python, Java, HTML, CSS, JavaScript, and C.
+                  LeshDevs takes students from their first line of syntax to confident problem-solving
+                  across Python, Java, HTML, CSS, JavaScript, and C.
                 </p>
                 <div className="hero-cta-row">
                   <button
@@ -356,12 +401,12 @@ export default function App() {
                     <span>Core Languages</span>
                   </div>
                   <div>
-                    <strong>{completedPythonLevels.length}/3</strong>
-                    <span>Python Levels Done</span>
+                    <strong>B1</strong>
+                    <span>Clear English Lessons</span>
                   </div>
                   <div>
-                    <strong>Rank {rank.name}</strong>
-                    <span>{points} XP Earned</span>
+                    <strong>Live</strong>
+                    <span>Code Editor &amp; Checks</span>
                   </div>
                 </div>
               </div>
@@ -395,31 +440,8 @@ export default function App() {
                   </code>
                 </pre>
                 <div className="code-footer">
-                  <span>STATUS: COMPILING FUNDAMENTALS</span>
-                  <span>NEXT RANK: {nextRank ? `${nextRank.min - points} PTS` : 'MAX'}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="rank-banner">
-            <div className="container rank-banner-inner">
-              <div className="rank-info">
-                <span className="mono-label">OPERATIVE PROGRESSION</span>
-                <strong>
-                  Rank {rank.name} · {points} / {nextRank ? nextRank.min : points} Points
-                </strong>
-              </div>
-              <div className="rank-bar-wrap">
-                <div className="rank-bar">
-                  <span style={{ width: `${progressToNext}%` }} />
-                </div>
-                <div className="rank-tiers">
-                  {ranks.map((r) => (
-                    <span key={r.name} className={points >= r.min ? 'tier active' : 'tier'}>
-                      {r.name}
-                    </span>
-                  ))}
+                  <span>TRACK: {currentLanguage.name.toUpperCase()}</span>
+                  <span>{currentLanguage.statusLabel.toUpperCase()}</span>
                 </div>
               </div>
             </div>
@@ -455,13 +477,10 @@ export default function App() {
                       <span className="lang-tag">{lang.tag}</span>
                     </div>
                     <h3>{lang.name}</h3>
-                    <p className="lang-topic">Up next: {lang.topic}</p>
-                    <div className="lang-progress">
-                      <span style={{ width: `${lang.progress}%` }} />
-                    </div>
+                    <p className="lang-topic">Focus: {lang.topic}</p>
                     <div className="lang-meta">
-                      <span>{lang.progress}% complete</span>
-                      <span>{lang.lessons} lessons</span>
+                      <span>{lang.statusLabel}</span>
+                      <span>{lang.lessons} planned lessons</span>
                     </div>
                   </button>
                 ))}
@@ -475,11 +494,11 @@ export default function App() {
                 <span className="section-kicker">INTERACTIVE SANDBOX</span>
                 <h2>Prove what you know in the Challenge Arena.</h2>
                 <p>
-                  Test your instincts with rapid-fire foundation checks across all six languages. Every
-                  correct answer adds +25 points to your rank score.
+                  Test your instincts with quick concept checks across all six languages—no sign-in
+                  required.
                 </p>
                 <div className="arena-pills">
-                  <span>⚡ +25 PTS PER SOLVE</span>
+                  <span>✓ NO SIGN-IN NEEDED</span>
                   <span>◷ INSTANT FEEDBACK</span>
                 </div>
               </div>
@@ -501,7 +520,9 @@ export default function App() {
                       className={`option-btn ${selectedAnswer === option ? 'is-selected' : ''} ${
                         answered && option === challenge.answer ? 'is-correct' : ''
                       } ${
-                        answered && selectedAnswer === option && option !== challenge.answer ? 'is-wrong' : ''
+                        answered && selectedAnswer === option && option !== challenge.answer
+                          ? 'is-wrong'
+                          : ''
                       }`}
                       onClick={() => !answered && setSelectedAnswer(option)}
                       disabled={answered}
@@ -514,7 +535,7 @@ export default function App() {
 
                 <div className="challenge-actions">
                   <span className="challenge-notice" aria-live="polite">
-                    {notice || 'Select an option to verify your answer'}
+                    {notice || 'Select an option to check your answer'}
                   </span>
                   {answered ? (
                     <button type="button" className="btn btn-primary" onClick={nextChallenge}>
@@ -617,10 +638,7 @@ export default function App() {
         >
           Lessons
         </button>
-        <button
-          type="button"
-          onClick={() => setIsEditorOpen(true)}
-        >
+        <button type="button" onClick={() => setIsEditorOpen(true)}>
           Editor
         </button>
       </nav>
