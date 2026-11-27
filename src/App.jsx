@@ -10,7 +10,7 @@ import CodeEditor from './components/CodeEditor'
 import CodeBlock from './components/CodeBlock'
 import LessonsPage from './pages/LessonsPage'
 
-const FOUNDATION_SNIPPET = `# LeshDevs Core Foundations\ndef build_foundation(student):\n    stack = ["Python", "Java", "HTML", "CSS", "JavaScript", "C"]\n    for lang in stack:\n        student.practice(lang)\n    return "Ready for B1 mastery."`
+const FOUNDATION_SNIPPET = `# LeshDevs Core Foundations\ndef build_foundation(student):\n    stack = ["Python", "Java", "HTML", "CSS", "JavaScript", "C"]\n    for lang in stack:\n        student.practice(lang)\n    return "Ready for clear, simple English lessons."`
 
 const languages = [
   {
@@ -18,7 +18,7 @@ const languages = [
     symbol: 'Py',
     logoSrc: pythonLogo,
     lessons: 12,
-    statusLabel: 'Active B1 Pilot',
+    statusLabel: 'Active Pilot',
     topic: 'History, syntax & AI/ML',
     code: '01',
     tag: 'Scripting & AI',
@@ -408,8 +408,8 @@ export default function App() {
                     <span>Core Languages</span>
                   </div>
                   <div className="duo-stat-tile">
-                    <strong>B1</strong>
-                    <span>Clear English Lessons</span>
+                    <strong>Simple</strong>
+                    <span>Clear, simple English</span>
                   </div>
                   <div className="duo-stat-tile">
                     <strong>Live</strong>
