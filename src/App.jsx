@@ -7,7 +7,10 @@ import cssLogo from './CSS.webp'
 import jsLogo from './javascript.webp'
 import cLogo from './C.png'
 import CodeEditor from './components/CodeEditor'
+import CodeBlock from './components/CodeBlock'
 import LessonsPage from './pages/LessonsPage'
+
+const FOUNDATION_SNIPPET = `# LeshDevs Core Foundations\ndef build_foundation(student):\n    stack = ["Python", "Java", "HTML", "CSS", "JavaScript", "C"]\n    for lang in stack:\n        student.practice(lang)\n    return "Ready for B1 mastery."`
 
 const languages = [
   {
@@ -415,39 +418,13 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="hero-code-card duo-card" aria-label="Interactive code preview">
-                <div className="code-header">
-                  <div className="code-dots">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                  <span className="code-filename">foundation_core.py</span>
-                  <span className="code-lang-tag">{currentLanguage.name}</span>
-                </div>
-                <pre className="code-body">
-                  <code>
-                    <span className="ln">01</span> <span className="kw">def</span>{' '}
-                    <span className="fn">build_foundation</span>(student):
-                    {'\n'}
-                    <span className="ln">02</span>     stack = [<span className="str">&quot;Python&quot;</span>,{' '}
-                    <span className="str">&quot;Java&quot;</span>, <span className="str">&quot;JS&quot;</span>,{' '}
-                    <span className="str">&quot;C&quot;</span>]
-                    {'\n'}
-                    <span className="ln">03</span>     <span className="kw">for</span> lang{' '}
-                    <span className="kw">in</span> stack:
-                    {'\n'}
-                    <span className="ln">04</span>         student.master(lang)
-                    {'\n'}
-                    <span className="ln">05</span>     <span className="kw">return</span>{' '}
-                    <span className="str">&quot;Ready to ship.&quot;</span>
-                  </code>
-                </pre>
-                <div className="code-footer">
-                  <span>TRACK: {currentLanguage.name.toUpperCase()}</span>
-                  <span>{currentLanguage.statusLabel.toUpperCase()}</span>
-                </div>
-              </div>
+              <CodeBlock
+                code={FOUNDATION_SNIPPET}
+                filename="foundation_core.py"
+                language={currentLanguage.name}
+                tryTask={`Selected track: ${currentLanguage.name} (${currentLanguage.statusLabel}).`}
+                onOpenEditor={handleOpenEditorFromLesson}
+              />
             </div>
           </section>
 
