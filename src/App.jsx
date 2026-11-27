@@ -473,8 +473,8 @@ export default function App() {
           <section className="section arena-band" id="arena">
             <div className="container arena-grid">
               <div className="arena-copy">
-                <span className="section-kicker">INTERACTIVE SANDBOX</span>
-                <h2>Prove what you know in the Challenge Arena.</h2>
+                <span className="section-kicker">Quiz Sanctum</span>
+                <h2>Test your programming knowledge in the quiz sanctum. skill level is determined via percentage score and overall ranking (S-A-B-C-D-E tier)</h2>
                 <p>
                   Test your instincts with quick concept checks across all six languages—no sign-in
                   required.
