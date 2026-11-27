@@ -140,7 +140,7 @@ const resources = [
 
 function BrandShield() {
   return (
-    <span className="shield-emblem" aria-hidden="true">
+    <span className="shield-emblem duo-float" aria-hidden="true">
       <svg viewBox="0 0 48 54" width="28" height="32">
         <path
           d="M24 2 L45 9 L39 38 L24 52 L9 38 L3 9 Z"
@@ -193,6 +193,7 @@ export default function App() {
   const [challengeIndex, setChallengeIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [answered, setAnswered] = useState(false)
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null)
   const [notice, setNotice] = useState('')
   const [isEditorOpen, setIsEditorOpen] = useState(false)
   const [editorSnippet, setEditorSnippet] = useState('')
@@ -209,6 +210,13 @@ export default function App() {
   const challenge = challenges[challengeIndex]
   const currentLanguage =
     languages.find((language) => language.name === activeLanguage) || languages[0]
+
+  function resetChallengeFeedback() {
+    setSelectedAnswer('')
+    setAnswered(false)
+    setIsAnswerCorrect(null)
+    setNotice('')
+  }
 
   function navigateToPage(targetPage, selector = '') {
     setPage(targetPage)
@@ -229,25 +237,23 @@ export default function App() {
     if (!selectedAnswer || answered) return
     setAnswered(true)
     if (selectedAnswer === challenge.answer) {
-      setNotice('Correct! Nice work on that check.')
+      setIsAnswerCorrect(true)
+      setNotice('Awesome! Correct answer.')
     } else {
-      setNotice(`Not quite — the answer is ${challenge.answer}. Try the next question.`)
+      setIsAnswerCorrect(false)
+      setNotice(`Not quite! Correct answer: ${challenge.answer}`)
     }
   }
 
   function nextChallenge() {
     setChallengeIndex((index) => (index + 1) % challenges.length)
-    setSelectedAnswer('')
-    setAnswered(false)
-    setNotice('')
+    resetChallengeFeedback()
   }
 
   function startChallenge(language) {
     const index = challenges.findIndex((item) => item.language === language)
     if (index >= 0) setChallengeIndex(index)
-    setSelectedAnswer('')
-    setAnswered(false)
-    setNotice('')
+    resetChallengeFeedback()
     navigateToPage('home', '#arena')
   }
 
@@ -256,9 +262,7 @@ export default function App() {
     const index = challenges.findIndex((item) => item.language === name)
     if (index >= 0) {
       setChallengeIndex(index)
-      setSelectedAnswer('')
-      setAnswered(false)
-      setNotice('')
+      resetChallengeFeedback()
     }
     if (name === 'Python') {
       navigateToPage('lessons')
@@ -341,7 +345,7 @@ export default function App() {
           <div className="nav-actions">
             <button
               type="button"
-              className="theme-btn"
+              className="theme-btn duo-3d"
               onClick={toggleDarkMode}
               aria-pressed={theme === 'dark'}
             >
@@ -350,7 +354,7 @@ export default function App() {
             </button>
             <button
               type="button"
-              className="nav-cta"
+              className="nav-cta duo-3d"
               onClick={() => navigateToPage('lessons')}
             >
               Open Lessons
@@ -367,11 +371,11 @@ export default function App() {
           onOpenEditor={handleOpenEditorFromLesson}
         />
       ) : (
-        <main id="top">
+        <main id="top" className="duo-pop">
           <section className="hero-section">
             <div className="container hero-grid">
               <div className="hero-copy">
-                <div className="hero-badge">
+                <div className="hero-badge duo-bounce">
                   <span className="pulse-dot" />
                   <span>FOUNDATIONS FIRST · 6 CORE LANGUAGES</span>
                 </div>
@@ -385,33 +389,33 @@ export default function App() {
                 <div className="hero-cta-row">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary duo-3d"
                     onClick={() => navigateToPage('lessons')}
                   >
                     Start Python Lessons <span>→</span>
                   </button>
-                  <a className="btn btn-outline" href="#arena">
+                  <a className="btn btn-outline duo-3d" href="#arena">
                     Try Live Challenge
                   </a>
                 </div>
 
                 <div className="hero-metrics">
-                  <div>
+                  <div className="duo-stat-tile">
                     <strong>6</strong>
                     <span>Core Languages</span>
                   </div>
-                  <div>
+                  <div className="duo-stat-tile">
                     <strong>B1</strong>
                     <span>Clear English Lessons</span>
                   </div>
-                  <div>
+                  <div className="duo-stat-tile">
                     <strong>Live</strong>
                     <span>Code Editor &amp; Checks</span>
                   </div>
                 </div>
               </div>
 
-              <div className="hero-code-card" aria-label="Interactive code preview">
+              <div className="hero-code-card duo-card" aria-label="Interactive code preview">
                 <div className="code-header">
                   <div className="code-dots">
                     <i />
@@ -456,7 +460,7 @@ export default function App() {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-outline"
+                  className="btn btn-outline duo-3d"
                   onClick={() => startChallenge(currentLanguage.name)}
                 >
                   Practice {currentLanguage.name} →
@@ -468,7 +472,9 @@ export default function App() {
                   <button
                     type="button"
                     key={lang.name}
-                    className={`lang-card ${activeLanguage === lang.name ? 'selected' : ''}`}
+                    className={`lang-card duo-card duo-3d ${
+                      activeLanguage === lang.name ? 'selected' : ''
+                    }`}
                     onClick={() => handleSelectLanguage(lang.name)}
                     aria-pressed={activeLanguage === lang.name}
                   >
@@ -503,7 +509,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="challenge-box">
+              <div className="challenge-box duo-card">
                 <div className="challenge-head">
                   <span className="challenge-badge">LIVE CHECK · {challenge.language.toUpperCase()}</span>
                   <span className="challenge-step">
@@ -513,42 +519,58 @@ export default function App() {
                 <h3>{challenge.prompt}</h3>
 
                 <div className="options-grid">
-                  {challenge.options.map((option, idx) => (
-                    <button
-                      type="button"
-                      key={option}
-                      className={`option-btn ${selectedAnswer === option ? 'is-selected' : ''} ${
-                        answered && option === challenge.answer ? 'is-correct' : ''
-                      } ${
-                        answered && selectedAnswer === option && option !== challenge.answer
-                          ? 'is-wrong'
-                          : ''
-                      }`}
-                      onClick={() => !answered && setSelectedAnswer(option)}
-                      disabled={answered}
-                    >
-                      <span className="opt-key">{String.fromCharCode(65 + idx)}</span>
-                      <span className="opt-val">{option}</span>
-                    </button>
-                  ))}
+                  {challenge.options.map((option, idx) => {
+                    const isSelected = selectedAnswer === option
+                    const isRightOption = answered && option === challenge.answer
+                    const isWrongPick = answered && isSelected && option !== challenge.answer
+
+                    return (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`option-btn duo-3d ${isSelected ? 'is-selected' : ''} ${
+                          isRightOption ? 'is-correct' : ''
+                        } ${isWrongPick ? 'is-wrong' : ''}`}
+                        onClick={() => !answered && setSelectedAnswer(option)}
+                        disabled={answered}
+                      >
+                        <span className="opt-key">{String.fromCharCode(65 + idx)}</span>
+                        <span className="opt-val">{option}</span>
+                        {isRightOption && <span className="opt-feedback-tag">✓</span>}
+                        {isWrongPick && <span className="opt-feedback-tag">✕</span>}
+                      </button>
+                    )
+                  })}
                 </div>
 
-                <div className="challenge-actions">
+                <div
+                  className={`challenge-actions duo-tray ${
+                    answered
+                      ? isAnswerCorrect
+                        ? 'is-tray-correct'
+                        : 'is-tray-wrong'
+                      : ''
+                  }`}
+                >
                   <span className="challenge-notice" aria-live="polite">
                     {notice || 'Select an option to check your answer'}
                   </span>
                   {answered ? (
-                    <button type="button" className="btn btn-primary" onClick={nextChallenge}>
+                    <button
+                      type="button"
+                      className="btn btn-primary duo-3d"
+                      onClick={nextChallenge}
+                    >
                       Next Question →
                     </button>
                   ) : (
                     <button
                       type="button"
-                      className="btn btn-primary"
+                      className="btn btn-primary duo-3d"
                       onClick={submitAnswer}
                       disabled={!selectedAnswer}
                     >
-                      Submit Answer →
+                      Check Answer →
                     </button>
                   )}
                 </div>
@@ -577,7 +599,7 @@ export default function App() {
                     href={res.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="source-card"
+                    className="source-card duo-card duo-3d"
                   >
                     <div className="source-card-top">
                       <span className="source-mark">{res.mark}</span>
@@ -615,7 +637,7 @@ export default function App() {
           <p>Foundations of programming — Python, Java, HTML, CSS, JavaScript &amp; C.</p>
           <button
             type="button"
-            className="back-top"
+            className="back-top duo-3d"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             Back to top ↑
