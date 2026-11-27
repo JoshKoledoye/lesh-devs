@@ -31,8 +31,8 @@
 .site-shell[data-theme='dark'] {
   --bg-page: #1e1e1e;
   --bg-surface: #252526;
-  --bg-hud: #020c33;
-  --bg-hud-deep: #2A2A40;
+  --bg-hud: #383852;
+  --bg-hud-deep: #383852;
   --bg-vscode: #1e1e1e;
   --bg-vscode-panel: #252526;
   --text-main: #f3f4f6;
