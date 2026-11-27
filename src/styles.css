@@ -2,15 +2,20 @@
   --bg-page: #ffffff;
   --bg-surface: #f5f7fb;
   --bg-hud: #020c33;
-  --bg-void: #05070e;
+  --bg-vscode: #1e1e1e;
+  --bg-vscode-panel: #252526;
   --text-main: #060913;
   --text-muted: #465066;
   --text-inverse: #ffffff;
   --border-subtle: rgba(2, 12, 51, 0.16);
-  --border-hud: rgba(255, 255, 255, 0.2);
-  --glow-hud: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 18px 42px rgba(2, 12, 51, 0.26);
+  --border-hud: rgba(255, 255, 255, 0.18);
+  --neon-blue: #38bdf8;
+  --neon-blue-glow: rgba(56, 189, 248, 0.32);
+  --neon-blue-tint: rgba(56, 189, 248, 0.1);
+  --glow-hud: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 18px 42px rgba(2, 12, 51, 0.24);
   --grid-line: rgba(2, 12, 51, 0.05);
   --grid-hud: rgba(255, 255, 255, 0.055);
+  --grid-dark: rgba(255, 255, 255, 0.045);
   --correct-bg: #123824;
   --correct-border: #22c55e;
   --correct-text: #dcfce7;
@@ -23,18 +28,20 @@
 
 :root[data-theme='dark'],
 .site-shell[data-theme='dark'] {
-  --bg-page: #05070e;
-  --bg-surface: #020c33;
+  --bg-page: #1e1e1e;
+  --bg-surface: #252526;
   --bg-hud: #020c33;
-  --bg-void: #000000;
-  --text-main: #ffffff;
-  --text-muted: #b8c2d9;
+  --bg-vscode: #1e1e1e;
+  --bg-vscode-panel: #252526;
+  --text-main: #f3f4f6;
+  --text-muted: #a1a1aa;
   --text-inverse: #ffffff;
-  --border-subtle: rgba(255, 255, 255, 0.18);
-  --border-hud: rgba(255, 255, 255, 0.22);
-  --glow-hud: 0 0 24px rgba(255, 255, 255, 0.07), 0 18px 44px rgba(0, 0, 0, 0.68);
-  --grid-line: rgba(255, 255, 255, 0.042);
-  --grid-hud: rgba(255, 255, 255, 0.058);
+  --border-subtle: rgba(255, 255, 255, 0.14);
+  --border-hud: rgba(255, 255, 255, 0.18);
+  --glow-hud: 0 0 24px rgba(2, 12, 51, 0.45), 0 18px 40px rgba(0, 0, 0, 0.42);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --grid-hud: rgba(255, 255, 255, 0.055);
+  --grid-dark: rgba(255, 255, 255, 0.045);
 }
 
 @keyframes gridDrift {
@@ -193,7 +200,7 @@ body {
 }
 
 .nav-links a {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.84);
   text-decoration: none;
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -205,8 +212,8 @@ body {
 }
 
 .nav-links a:hover {
-  color: #ffffff;
-  border-bottom-color: #ffffff;
+  color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
   transform: translateY(-1px);
 }
 
@@ -216,7 +223,7 @@ body {
   gap: 10px;
 }
 
-/* Duolingo Tactile 3D Lip Controls */
+/* Duolingo Tactile 3D Lip Controls + Neon Blue Hover/Selection */
 .duo-3d {
   transition:
     transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -227,6 +234,8 @@ body {
 
 .duo-3d:hover:not(:disabled) {
   transform: translateY(-2px);
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 14px var(--neon-blue-glow);
 }
 
 .duo-3d:active:not(:disabled) {
@@ -266,11 +275,16 @@ body {
   cursor: pointer;
 }
 
+.nav-cta:hover {
+  background: var(--bg-hud);
+  color: var(--neon-blue);
+}
+
 /* Hero Command Section */
 .hero-section {
   background:
-    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.09), transparent 45%),
-    linear-gradient(180deg, var(--bg-hud) 0%, var(--bg-void) 100%);
+    radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.1), transparent 45%),
+    linear-gradient(180deg, var(--bg-hud) 0%, var(--bg-vscode) 100%);
   color: #ffffff;
   padding: 76px 0 68px;
   border-bottom: 1px solid var(--border-hud);
@@ -317,8 +331,8 @@ body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 10px #ffffff;
+  background: var(--neon-blue);
+  box-shadow: 0 0 10px var(--neon-blue);
 }
 
 .hero-copy h1 {
@@ -330,7 +344,7 @@ body {
 }
 
 .dot {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--neon-blue);
 }
 
 .hero-subtitle {
@@ -366,20 +380,26 @@ body {
 .btn-primary {
   background: #ffffff;
   color: #020c33;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   border-bottom: 4px solid rgba(2, 12, 51, 0.45);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--bg-hud);
+  color: var(--neon-blue);
+  border-color: var(--neon-blue);
 }
 
 .btn-outline {
   background: var(--bg-page);
   color: var(--text-main);
-  border: 1px solid var(--border-subtle);
+  border: 2px solid var(--border-subtle);
   border-bottom: 4px solid var(--border-subtle);
 }
 
 .hero-section .btn-outline,
 .lessons-page-bar .btn-outline {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(37, 37, 38, 0.85);
   color: #ffffff;
   border-color: var(--border-hud);
   border-bottom: 4px solid rgba(255, 255, 255, 0.25);
@@ -399,7 +419,7 @@ body {
 }
 
 .duo-stat-tile {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(37, 37, 38, 0.72);
   border: 1px solid var(--border-hud);
   border-bottom: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
@@ -418,13 +438,18 @@ body {
   color: rgba(255, 255, 255, 0.74);
 }
 
-/* Duolingo Tactile Cards */
+/* Duolingo Tactile Cards + Animated Dark Grid */
 .duo-card {
   border-radius: 16px;
 }
 
 .hero-code-card {
-  background: #000000;
+  background-color: var(--bg-vscode);
+  background-image:
+    linear-gradient(to right, var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-dark) 1px, transparent 1px);
+  background-size: 28px 28px;
+  animation: gridDrift 20s linear infinite;
   border: 1px solid var(--border-hud);
   border-bottom: 5px solid rgba(255, 255, 255, 0.22);
   overflow: hidden;
@@ -437,7 +462,7 @@ body {
   justify-content: space-between;
   gap: 10px;
   padding: 11px 14px;
-  background: #020c33;
+  background: var(--bg-hud);
   border-bottom: 1px solid var(--border-hud);
   font-family: var(--font-mono);
   font-size: 0.74rem;
@@ -460,7 +485,8 @@ body {
 
 .code-lang-tag {
   padding: 2px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
   border-radius: 999px;
   font-size: 0.7rem;
 }
@@ -472,11 +498,11 @@ body {
   font-size: 0.86rem;
   line-height: 1.65;
   overflow-x: auto;
-  color: #ffffff;
+  color: #f3f4f6;
 }
 
 .ln {
-  color: rgba(255, 255, 255, 0.34);
+  color: rgba(255, 255, 255, 0.36);
   margin-right: 12px;
   user-select: none;
 }
@@ -486,13 +512,13 @@ body {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  background: #020c33;
+  background: var(--bg-vscode-panel);
   border-top: 1px solid var(--border-hud);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* Sections & Headers */
@@ -547,15 +573,16 @@ body {
 }
 
 .lang-card:hover {
-  border-color: #020c33;
-  border-bottom-color: #020c33;
-  box-shadow: 0 12px 26px rgba(2, 12, 51, 0.14);
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  box-shadow: 0 0 18px var(--neon-blue-glow), 0 12px 24px rgba(2, 12, 51, 0.14);
 }
 
 .lang-card.selected {
-  border-color: #020c33;
-  border-bottom-color: #020c33;
-  box-shadow: 0 0 0 2px #020c33, 0 14px 28px rgba(2, 12, 51, 0.18);
+  background-color: var(--bg-surface);
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  box-shadow: 0 0 0 2px var(--neon-blue), 0 0 22px var(--neon-blue-glow);
 }
 
 .lang-card-top {
@@ -569,7 +596,7 @@ body {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: #020c33;
+  background: var(--bg-hud);
   border: 1px solid var(--border-hud);
   display: grid;
   place-items: center;
@@ -622,16 +649,21 @@ body {
   color: var(--text-muted);
 }
 
-/* Challenge Arena HUD Band */
+/* Challenge Arena HUD Band + Animated Grid */
 .arena-band {
-  background: linear-gradient(180deg, var(--bg-hud) 0%, var(--bg-void) 100%);
+  background-color: var(--bg-vscode);
+  background-image:
+    linear-gradient(to right, var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-dark) 1px, transparent 1px);
+  background-size: 36px 36px;
+  animation: gridDrift 20s linear infinite;
   color: #ffffff;
   border-top: 1px solid var(--border-hud);
   border-bottom: 1px solid var(--border-hud);
 }
 
 .arena-band .section-kicker {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--neon-blue);
 }
 
 .arena-grid {
@@ -664,11 +696,16 @@ body {
   padding: 6px 12px;
   border: 1px solid var(--border-hud);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .challenge-box {
-  background: #000000;
+  background-color: var(--bg-vscode-panel);
+  background-image:
+    linear-gradient(to right, var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-dark) 1px, transparent 1px);
+  background-size: 28px 28px;
+  animation: gridDrift 22s linear infinite;
   color: #ffffff;
   border: 1px solid var(--border-hud);
   border-bottom: 5px solid rgba(255, 255, 255, 0.22);
@@ -680,7 +717,7 @@ body {
 }
 
 .lesson-block-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 30, 30, 0.86);
   border: 1px solid var(--border-hud);
   border-radius: 12px;
   padding: 16px;
@@ -715,7 +752,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--neon-blue);
   color: #020c33;
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -739,7 +776,7 @@ body {
 .challenge-badge {
   padding: 4px 12px;
   border-radius: 999px;
-  background: #020c33;
+  background: var(--bg-hud);
   border: 1px solid var(--border-hud);
 }
 
@@ -764,7 +801,7 @@ body {
   align-items: center;
   gap: 10px;
   text-align: left;
-  background: #05070e;
+  background: var(--bg-vscode);
   color: #ffffff;
   border: 2px solid var(--border-hud);
   border-bottom: 4px solid rgba(255, 255, 255, 0.22);
@@ -774,15 +811,17 @@ body {
 }
 
 .option-btn:hover:not(:disabled) {
-  border-color: #ffffff;
-  background: #020c33;
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  background: var(--bg-hud);
+  box-shadow: 0 0 14px var(--neon-blue-glow);
 }
 
 .option-btn.is-selected {
-  border-color: #ffffff;
-  border-bottom-color: #ffffff;
-  background: #020c33;
-  box-shadow: 0 0 0 1px #ffffff;
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  background: var(--bg-hud);
+  box-shadow: 0 0 0 1px var(--neon-blue), 0 0 16px var(--neon-blue-glow);
 }
 
 /* Duolingo Green (Correct) & Red (Wrong) Quiz States */
@@ -833,7 +872,7 @@ body {
   gap: 14px;
   padding: 14px 16px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 30, 30, 0.82);
   border: 1px solid var(--border-hud);
   flex-wrap: wrap;
   transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -877,17 +916,24 @@ body {
   border-radius: 10px;
   border: 1px solid var(--border-hud);
   border-bottom: 4px solid rgba(255, 255, 255, 0.24);
-  background: #020c33;
-  color: rgba(255, 255, 255, 0.82);
+  background: var(--bg-vscode);
+  color: rgba(255, 255, 255, 0.84);
   cursor: pointer;
 }
 
-.holo-tab.active,
 .holo-tab:hover:not(:disabled) {
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  color: var(--neon-blue);
+  box-shadow: 0 0 14px var(--neon-blue-glow);
+}
+
+.holo-tab.active {
   background: #ffffff;
   color: #020c33;
-  border-color: #ffffff;
-  border-bottom-color: rgba(2, 12, 51, 0.45);
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  box-shadow: 0 0 16px var(--neon-blue-glow);
   font-weight: 700;
 }
 
@@ -896,9 +942,14 @@ body {
   cursor: not-allowed;
 }
 
-/* Source Wall */
+/* Source Wall + Animated Dark Grid */
 .source-wall-section {
-  background: var(--bg-void);
+  background-color: var(--bg-vscode);
+  background-image:
+    linear-gradient(to right, var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-dark) 1px, transparent 1px);
+  background-size: 36px 36px;
+  animation: gridDrift 24s linear infinite;
   color: #ffffff;
   border-top: 1px solid var(--border-hud);
 }
@@ -910,7 +961,7 @@ body {
 .light-head .section-kicker,
 .source-sub,
 .mono-label {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.74);
   font-family: var(--font-mono);
 }
 
@@ -932,15 +983,16 @@ body {
   gap: 10px;
   text-decoration: none;
   color: #ffffff;
-  background: #020c33;
+  background: var(--bg-vscode-panel);
   border: 1px solid var(--border-hud);
   border-bottom: 5px solid rgba(255, 255, 255, 0.22);
   padding: 20px;
 }
 
 .source-card:hover {
-  border-color: #ffffff;
-  box-shadow: 0 0 22px rgba(255, 255, 255, 0.14);
+  border-color: var(--neon-blue);
+  border-bottom-color: var(--neon-blue);
+  box-shadow: 0 0 20px var(--neon-blue-glow);
 }
 
 .source-card-top,
@@ -957,7 +1009,7 @@ body {
   padding: 3px 9px;
   border: 1px solid var(--border-hud);
   border-radius: 6px;
-  background: #000000;
+  background: var(--bg-hud);
 }
 
 .source-card h3 {
@@ -975,7 +1027,7 @@ body {
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--border-hud);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* Dedicated Lessons Page */
@@ -991,7 +1043,7 @@ body {
   flex-wrap: wrap;
   gap: 14px;
   padding: 14px 18px;
-  background: #020c33;
+  background: var(--bg-hud);
   border: 1px solid var(--border-hud);
   border-bottom: 4px solid rgba(255, 255, 255, 0.24);
   border-radius: 16px;
@@ -1000,13 +1052,13 @@ body {
 
 /* VS Code-style Code Snippet Block */
 .vscode-block {
-  background: #1e1e1e;
+  background: var(--bg-vscode);
   color: #d4d4d4;
-  border: 1px solid #2d2d30;
+  border: 1px solid #333333;
   border-bottom: 5px solid #141414;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
 }
 
 .vscode-topbar {
@@ -1014,7 +1066,7 @@ body {
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: #252526;
+  background: var(--bg-vscode-panel);
   border-bottom: 1px solid #333333;
   font-size: 0.84rem;
   flex-wrap: wrap;
@@ -1048,13 +1100,13 @@ body {
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 6px;
-  background: #020c33;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-hud);
+  color: var(--neon-blue);
+  border: 1px solid rgba(56, 189, 248, 0.45);
 }
 
 .vscode-open-btn {
-  background: #020c33;
+  background: var(--bg-hud);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-bottom: 3px solid rgba(255, 255, 255, 0.2);
@@ -1068,8 +1120,9 @@ body {
 }
 
 .vscode-open-btn:hover {
-  background: #ffffff;
+  background: var(--neon-blue);
   color: #020c33;
+  border-color: var(--neon-blue);
 }
 
 .vscode-legend {
@@ -1122,7 +1175,7 @@ body {
 }
 
 .vscode-line:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(56, 189, 248, 0.07);
 }
 
 .vscode-ln {
@@ -1151,7 +1204,7 @@ body {
 
 .vscode-footer {
   padding: 10px 14px;
-  background: #252526;
+  background: var(--bg-vscode-panel);
   border-top: 1px solid #333333;
   font-size: 0.84rem;
   color: #e2e8f0;
@@ -1159,7 +1212,7 @@ body {
 
 /* Footer & Mobile Navigation */
 .site-footer {
-  background: #020c33;
+  background: var(--bg-hud);
   color: #ffffff;
   border-top: 1px solid var(--border-hud);
   padding: 24px 0;
@@ -1204,6 +1257,10 @@ body {
 
   .site-shell,
   .hero-section::before,
+  .hero-code-card,
+  .arena-band,
+  .challenge-box,
+  .source-wall-section,
   .duo-pop,
   .duo-float,
   .duo-bounce,
@@ -1265,8 +1322,8 @@ body {
   }
 
   .mobile-bottom-nav button.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: inset 0 3px 0 #ffffff;
+    color: var(--neon-blue);
+    background: var(--neon-blue-tint);
+    box-shadow: inset 0 3px 0 var(--neon-blue);
   }
 }
