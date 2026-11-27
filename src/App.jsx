@@ -383,11 +383,10 @@ export default function App() {
                   <span>FOUNDATIONS FIRST · 6 CORE LANGUAGES</span>
                 </div>
                 <h1>
-                  Master the core of software engineering<span className="dot">.</span>
+                  Master the foundations of programming. That's it <span className="dot">.</span>
                 </h1>
                 <p className="hero-subtitle">
-                  LeshDevs takes students from their first line of syntax to confident problem-solving
-                  across Python, Java, HTML, CSS, JavaScript, and C.
+                  Learn how to program from absolute zero in 6 core languages laguages: Python, Java, Javascript, HTML, CSS and C
                 </p>
                 <div className="hero-cta-row">
                   <button
