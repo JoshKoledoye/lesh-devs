@@ -323,7 +323,7 @@ export default function App() {
                 navigateToPage('home', '#arena')
               }}
             >
-              Challenge Arena
+              Quiz sanctum
             </a>
             <a
               href="#source-wall"
@@ -353,7 +353,7 @@ export default function App() {
               aria-pressed={theme === 'dark'}
             >
               <span>{theme === 'dark' ? '☀' : '☾'}</span>
-              <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+              <span>{theme === 'dark' ? '' : ''}</span>
             </button>
             <button
               type="button"
