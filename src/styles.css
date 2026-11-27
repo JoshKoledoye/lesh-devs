@@ -518,19 +518,19 @@ body {
 }
 
 .lang-logo-slot {
-  width: 0px;
-  height: 0px;
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
-  background: var(--bg-hud);
-  border: 1px solid var(--border-hud);
+  background: black;
+  border: none;
   display: grid;
   place-items: center;
   overflow: hidden;
 }
 
 .lang-logo-img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   object-fit: contain;
 }
 
