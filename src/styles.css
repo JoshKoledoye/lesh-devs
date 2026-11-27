@@ -1,21 +1,21 @@
 :root {
   --bg-page: #ffffff;
   --bg-surface: #eff6ff;
-  --bg-hud: #1d4ed8;
-  --bg-hud-deep: #1e3a8a;
+  --bg-hud: #3b6ef6;
+  --bg-hud-deep: #2554d4;
   --bg-vscode: #1e1e1e;
   --bg-vscode-panel: #252526;
   --text-main: #0f172a;
   --text-muted: #475569;
   --text-inverse: #ffffff;
-  --border-subtle: rgba(29, 78, 216, 0.18);
-  --border-hud: rgba(255, 255, 255, 0.24);
+  --border-subtle: rgba(59, 110, 246, 0.22);
+  --border-hud: rgba(255, 255, 255, 0.28);
   --neon-blue: #38bdf8;
   --neon-blue-glow: rgba(56, 189, 248, 0.34);
   --neon-blue-tint: rgba(56, 189, 248, 0.12);
-  --glow-hud: 0 0 0 1px rgba(255, 255, 255, 0.16), 0 18px 40px rgba(29, 78, 216, 0.22);
-  --grid-line: rgba(29, 78, 216, 0.055);
-  --grid-hud: rgba(255, 255, 255, 0.08);
+  --glow-hud: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 18px 40px rgba(59, 110, 246, 0.24);
+  --grid-line: rgba(59, 110, 246, 0.06);
+  --grid-hud: rgba(255, 255, 255, 0.1);
   --grid-dark: rgba(255, 255, 255, 0.045);
   --correct-bg: #123824;
   --correct-border: #22c55e;
@@ -40,7 +40,7 @@
   --text-inverse: #ffffff;
   --border-subtle: rgba(255, 255, 255, 0.14);
   --border-hud: rgba(255, 255, 255, 0.18);
-  --glow-hud: 0 0 24px rgba(2, 12, 51, 0.45), 0 18px 40px rgba(0, 0, 0, 0.42);
+  --glow-hud: 0 0 24px rgba(50, 50, 77, 0.45), 0 18px 40px rgba(0, 0, 0, 0.42);
   --grid-line: rgba(255, 255, 255, 0.045);
   --grid-hud: rgba(255, 255, 255, 0.055);
   --grid-dark: rgba(255, 255, 255, 0.045);
@@ -157,7 +157,6 @@ body {
   animation: duoPulseBadge 2.8s ease-in-out infinite;
 }
 
-/* Top HUD Navigation */
 .navbar {
   position: sticky;
   top: 0;
@@ -202,7 +201,7 @@ body {
 }
 
 .nav-links a {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -225,7 +224,6 @@ body {
   gap: 10px;
 }
 
-/* Duolingo Tactile 3D Lip Controls + Neon Blue Hover/Selection */
 .duo-3d {
   transition:
     transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -249,10 +247,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
   border: 1px solid var(--border-hud);
-  border-bottom: 4px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 4px solid rgba(255, 255, 255, 0.32);
   border-radius: 10px;
   padding: 7px 12px;
   font-family: var(--font-mono);
@@ -282,10 +280,9 @@ body {
   color: var(--neon-blue);
 }
 
-/* Hero Command Section */
 .hero-section {
   background:
-    radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.16), transparent 45%),
+    radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.18), transparent 45%),
     linear-gradient(180deg, var(--bg-hud) 0%, var(--bg-hud-deep) 100%);
   color: #ffffff;
   padding: 76px 0 68px;
@@ -328,7 +325,7 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid var(--border-hud);
   padding: 6px 12px;
   border-radius: 999px;
@@ -357,7 +354,7 @@ body {
 
 .hero-subtitle {
   margin: 0 0 26px;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1.04rem;
   max-width: 56ch;
 }
@@ -408,7 +405,7 @@ body {
 .hero-section .btn-outline,
 .lessons-page-bar .btn-outline,
 .editor-console .btn-outline {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   border-color: var(--border-hud);
   border-bottom: 4px solid rgba(255, 255, 255, 0.25);
@@ -428,7 +425,7 @@ body {
 }
 
 .duo-stat-tile {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid var(--border-hud);
   border-bottom: 3px solid rgba(255, 255, 255, 0.25);
   border-radius: 12px;
@@ -444,15 +441,13 @@ body {
 
 .duo-stat-tile span {
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.84);
 }
 
-/* Duolingo Tactile Cards + Animated Dark Grid */
 .duo-card {
   border-radius: 16px;
 }
 
-/* Sections & Headers */
 .section {
   padding: 72px 0;
 }
@@ -483,7 +478,6 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Language Track Cards */
 .lang-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -506,7 +500,7 @@ body {
 .lang-card:hover {
   border-color: var(--neon-blue);
   border-bottom-color: var(--neon-blue);
-  box-shadow: 0 0 18px var(--neon-blue-glow), 0 12px 24px rgba(29, 78, 216, 0.14);
+  box-shadow: 0 0 18px var(--neon-blue-glow), 0 12px 24px rgba(59, 110, 246, 0.14);
 }
 
 .lang-card.selected {
@@ -580,7 +574,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Challenge Arena Band + Animated Grid */
 .arena-band {
   background-color: var(--bg-vscode);
   background-image:
@@ -830,7 +823,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Level Tabs on Lessons Page */
 .holomat-lang-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -872,7 +864,6 @@ body {
   cursor: not-allowed;
 }
 
-/* Source Wall + Animated Dark Grid */
 .source-wall-section {
   background-color: var(--bg-vscode);
   background-image:
@@ -960,7 +951,6 @@ body {
   color: rgba(255, 255, 255, 0.82);
 }
 
-/* Dedicated Lessons Page */
 .lessons-page {
   min-height: 75vh;
   padding-top: 24px;
@@ -980,7 +970,6 @@ body {
   margin-bottom: 12px;
 }
 
-/* VS Code-style Code Snippet Block */
 .vscode-block {
   background-color: var(--bg-vscode);
   background-image:
@@ -1146,7 +1135,6 @@ body {
   color: #e2e8f0;
 }
 
-/* Interactive CodeEditor Modal */
 .editor-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1236,7 +1224,7 @@ body {
 
 .editor-textarea {
   width: 100%;
-  min-height: 210px;
+  min-height: 185px;
   resize: vertical;
   background: #141414;
   color: #f3f4f6;
@@ -1273,19 +1261,14 @@ body {
   margin-bottom: 10px;
 }
 
-.editor-console-body {
-  margin: 0;
-  padding: 12px;
-  background: var(--bg-vscode);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.editor-visual-frame {
+  width: 100%;
+  min-height: 190px;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.84rem;
-  color: #e2e8f0;
-  white-space: pre-wrap;
 }
 
-/* Footer & Mobile Navigation */
 .site-footer {
   background: var(--bg-hud);
   color: #ffffff;
@@ -1308,7 +1291,7 @@ body {
 }
 
 .back-top {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   border: 1px solid var(--border-hud);
   border-bottom: 3px solid rgba(255, 255, 255, 0.25);
