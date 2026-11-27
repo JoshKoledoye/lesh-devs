@@ -105,61 +105,67 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
   const [currentIdx, setCurrentIdx] = useState(0)
   const [highestUnlocked, setHighestUnlocked] = useState(0)
   const [selectedOption, setSelectedOption] = useState('')
+  const [attemptState, setAttemptState] = useState('idle') // 'idle' | 'correct' | 'wrong'
   const [statusMessage, setStatusMessage] = useState('')
-  const [isPassed, setIsPassed] = useState(false)
 
   const level = PYTHON_LEVELS[currentIdx]
-  const isNextUnlocked = isPassed || currentIdx < highestUnlocked
+  const isNextUnlocked = attemptState === 'correct' || currentIdx < highestUnlocked
+
+  function resetQuizState(passedAlready = false) {
+    setSelectedOption('')
+    setStatusMessage('')
+    setAttemptState(passedAlready ? 'correct' : 'idle')
+  }
 
   function handleSelectLevel(idx) {
     if (idx > highestUnlocked) {
+      setAttemptState('wrong')
       setStatusMessage(
         `Pass Level ${PYTHON_LEVELS[idx - 1].id} first to unlock Level ${PYTHON_LEVELS[idx].id}.`
       )
       return
     }
     setCurrentIdx(idx)
-    setSelectedOption('')
-    setStatusMessage('')
-    setIsPassed(idx < highestUnlocked)
+    resetQuizState(idx < highestUnlocked)
   }
 
   function handleVerifyAnswer() {
     if (!selectedOption) return
 
     if (selectedOption === level.question.answer) {
-      setIsPassed(true)
+      setAttemptState('correct')
       const nextUnlock = Math.max(
         highestUnlocked,
         Math.min(PYTHON_LEVELS.length - 1, currentIdx + 1)
       )
       setHighestUnlocked(nextUnlock)
-      setStatusMessage('Verified! You can now move to the next level.')
+      setStatusMessage('Spot on! Level verified—you can move to the next level.')
       if (onCompleteLevel) {
         onCompleteLevel(level.id)
       }
     } else {
-      setIsPassed(false)
-      setStatusMessage('Not quite yet. Review the checkpoints above and try again.')
+      setAttemptState('wrong')
+      setStatusMessage(
+        `Not quite! Correct answer: ${level.question.answer}. Check the checkpoints and try again.`
+      )
     }
   }
 
   function handleNextLevel() {
     if (!isNextUnlocked) {
+      setAttemptState('wrong')
       setStatusMessage('Answer the verification question correctly to unlock the next level.')
       return
     }
     if (currentIdx < PYTHON_LEVELS.length - 1) {
       const nextIdx = currentIdx + 1
       setCurrentIdx(nextIdx)
-      setSelectedOption('')
-      setStatusMessage('')
-      setIsPassed(nextIdx < highestUnlocked)
+      resetQuizState(nextIdx < highestUnlocked)
     }
   }
 
   return (
-    <section className="section" id="python-track">
+    <section className="section duo-pop" id="python-track">
       <div className="container">
         <div className="section-head">
           <div>
@@ -176,7 +182,7 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
                   key={item.id}
                   role="tab"
                   aria-selected={currentIdx === idx}
-                  className={`holo-tab ${currentIdx === idx ? 'active' : ''}`}
+                  className={`holo-tab duo-3d ${currentIdx === idx ? 'active' : ''}`}
                   onClick={() => handleSelectLevel(idx)}
                   disabled={locked}
                   title={locked ? 'Complete previous level to unlock' : item.title}
@@ -188,7 +194,7 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
           </div>
         </div>
 
-        <div className="challenge-box">
+        <div className="challenge-box duo-card">
           <div className="challenge-head">
             <span className="challenge-badge">{level.levelTag} · PYTHON</span>
             <span className="challenge-step">
@@ -199,17 +205,20 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
           <p>{level.summary}</p>
 
           {level.sections?.map((sec) => (
-            <div key={sec.heading}>
+            <div key={sec.heading} className="lesson-block-card">
               <h3>{sec.heading}</h3>
               <p>{sec.body}</p>
             </div>
           ))}
 
-          <div>
+          <div className="lesson-block-card">
             <span className="section-kicker">CHECKPOINTS</span>
-            <ul>
+            <ul className="duo-checklist">
               {level.checkpoints.map((point) => (
-                <li key={point}>{point}</li>
+                <li key={point}>
+                  <span className="duo-check-badge" aria-hidden="true">✓</span>
+                  <span>{point}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -222,49 +231,69 @@ export default function PythonTrack({ onOpenEditor, onCompleteLevel }) {
             onOpenEditor={onOpenEditor}
           />
 
-          <div>
+          <div className="lesson-block-card">
             <span className="section-kicker">UNDERSTANDING CHECK</span>
             <h3>{level.question.prompt}</h3>
 
             <div className="options-grid">
-              {level.question.options.map((opt, i) => (
-                <button
-                  type="button"
-                  key={opt}
-                  className={`option-btn ${selectedOption === opt ? 'is-selected' : ''} ${
-                    isPassed && opt === level.question.answer ? 'is-correct' : ''
-                  }`}
-                  onClick={() => {
-                    setSelectedOption(opt)
-                    setStatusMessage('')
-                  }}
-                >
-                  <span className="opt-key">{String.fromCharCode(65 + i)}</span>
-                  <span className="opt-val">{opt}</span>
-                </button>
-              ))}
+              {level.question.options.map((opt, i) => {
+                const isSelected = selectedOption === opt
+                const showCorrect = attemptState === 'correct' && opt === level.question.answer
+                const showWrong =
+                  attemptState === 'wrong' && isSelected && opt !== level.question.answer
+
+                return (
+                  <button
+                    type="button"
+                    key={opt}
+                    className={`option-btn duo-3d ${isSelected ? 'is-selected' : ''} ${
+                      showCorrect ? 'is-correct' : ''
+                    } ${showWrong ? 'is-wrong' : ''}`}
+                    onClick={() => {
+                      setSelectedOption(opt)
+                      if (attemptState === 'wrong') {
+                        setAttemptState('idle')
+                        setStatusMessage('')
+                      }
+                    }}
+                  >
+                    <span className="opt-key">{String.fromCharCode(65 + i)}</span>
+                    <span className="opt-val">{opt}</span>
+                    {showCorrect && <span className="opt-feedback-tag">✓</span>}
+                    {showWrong && <span className="opt-feedback-tag">✕</span>}
+                  </button>
+                )
+              })}
             </div>
           </div>
 
-          <div className="challenge-actions">
+          <div
+            className={`challenge-actions duo-tray ${
+              attemptState === 'correct'
+                ? 'is-tray-correct'
+                : attemptState === 'wrong'
+                  ? 'is-tray-wrong'
+                  : ''
+            }`}
+          >
             <span className="challenge-notice" aria-live="polite">
-              {statusMessage || 'Answer the question to verify your understanding before moving on.'}
+              {statusMessage || 'Pick an answer and hit Check to verify before moving on.'}
             </span>
 
             <div className="pane-actions">
               <button
                 type="button"
-                className="btn btn-outline"
+                className="btn btn-outline duo-3d"
                 onClick={handleVerifyAnswer}
                 disabled={!selectedOption}
               >
-                Verify Answer
+                Check Answer
               </button>
 
               {currentIdx < PYTHON_LEVELS.length - 1 && (
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-primary duo-3d"
                   onClick={handleNextLevel}
                   disabled={!isNextUnlocked}
                 >
