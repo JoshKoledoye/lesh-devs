@@ -474,10 +474,9 @@ export default function App() {
             <div className="container arena-grid">
               <div className="arena-copy">
                 <span className="section-kicker">Quiz Sanctum</span>
-                <h2>Test your programming knowledge in the quiz sanctum. skill level is determined via percentage score and overall ranking (S-A-B-C-D-E tier)</h2>
+                <h2>Test your programming knowledge in the quiz sanctum.</h2>
                 <p>
-                  Test your instincts with quick concept checks across all six languages—no sign-in
-                  required.
+                   skill level is determined via percentage score and overall ranking (S-A-B-C-D-E tier)—sign in required to save ranking
                 </p>
                 <div className="arena-pills">
                   <span>✓ NO SIGN-IN NEEDED</span>
